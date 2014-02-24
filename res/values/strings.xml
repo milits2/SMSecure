@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SMSecure</string>
+    <string name="action_settings">Settings</string>
+    
+    <string name="generatePad">Generate Pad</string>
+    <string name="encryptText">Encrypt</string>
+    <string name="decryptText">Decrypt</string>
+</resources>

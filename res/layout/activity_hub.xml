@@ -1,0 +1,94 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity" >
+
+    <Button
+        android:id="@+id/generatePad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:includeFontPadding="false"
+        android:text="@string/generatePad" 
+        android:onClick="generateOneTimePad"/>
+
+    <TextView
+        android:id="@+id/padContents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/generatePad"
+        android:layout_alignRight="@+id/generatePad"
+        android:layout_below="@+id/generatePad"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/headerEncrypt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/padContents"
+        android:layout_below="@+id/padContents"
+        android:layout_marginTop="20dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/cleantext"
+        android:inputType="text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/headerEncrypt"
+        android:layout_alignRight="@+id/padContents"
+        android:layout_below="@+id/headerEncrypt"
+        android:ems="10" >
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/ciphertext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/encryptMessage"
+        android:layout_alignRight="@+id/encryptMessage"
+        android:layout_below="@+id/encryptMessage"
+        android:layout_marginTop="20dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/plaintext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/decryptMessage"
+        android:layout_alignRight="@+id/decryptMessage"
+        android:layout_below="@+id/decryptMessage"
+        android:layout_marginTop="20dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/encryptMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/cleantext"
+        android:layout_alignRight="@+id/cleantext"
+        android:layout_below="@+id/cleantext"
+        android:layout_marginTop="20dp"
+        android:text="@string/encryptText"
+        android:onClick="encryptMessage" />
+
+    <Button
+        android:id="@+id/decryptMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/ciphertext"
+        android:layout_alignRight="@+id/ciphertext"
+        android:layout_below="@+id/ciphertext"
+        android:layout_marginTop="20dp"
+        android:text="@string/decryptText"
+        android:onClick="decryptMessage" />
+
+</RelativeLayout>
