@@ -36,4 +36,18 @@
         android:text="@string/hub" 
         android:onClick="hubScreen"/>
 
+    <Button
+        android:id="@+id/readSMSButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/readSMS" 
+        android:onClick="readTextMessages"/>
+
+    <EditText
+        android:id="@+id/smsTextBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text" />
+
 </LinearLayout>

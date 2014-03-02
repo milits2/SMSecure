@@ -4,8 +4,10 @@ import omnicladsecurity.smsecure.R;
 
 import omnicladsecurity.smsecure.OneTimePad;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
+import android.database.Cursor;
 import android.telephony.SmsManager;
 import android.view.Menu;
 import android.view.View;
@@ -35,6 +37,44 @@ public class Hub extends Activity {
     	
     	sendTextMessage(message.getText().toString(), phoneNumber.getText().toString());
     	   	
+    }
+    
+    public void readTextMessages(View view)
+    {
+    	TextView phoneNumber = (TextView)findViewById(R.id.phoneNumberTextBox);
+    	Cursor cursor = getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
+    	cursor.moveToFirst();
+    	String msgData = "";
+    	Boolean correctAddress = false;
+    	
+    	do{
+    	   
+    	   for(int idx=0;idx<cursor.getColumnCount();idx++)
+    	   {
+    		   
+    		   if (cursor.getColumnName(idx).equals("address") )
+			   {
+    			   if (cursor.getString(idx).equals(phoneNumber.getText().toString()))
+				   {
+    				   correctAddress = true;
+				   }
+    			   else
+    			   {
+    				   correctAddress = false;
+    			   }
+			   }
+    		   
+    		   if (cursor.getColumnName(idx).equals( "body") && correctAddress)
+			   { 
+    			   msgData += " " + cursor.getString(idx);
+			   }
+			   
+    	   }
+    	}while(cursor.moveToNext());    
+    	
+    	TextView smsTextBox = (TextView)findViewById(R.id.smsTextBox);
+    	
+    	smsTextBox.setText(msgData);
     }
     
     public void sendTextMessage(String text, String address)

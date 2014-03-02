@@ -24,7 +24,7 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f08000d;
+        public static final int action_settings=0x7f08000f;
         public static final int ciphertext=0x7f080004;
         public static final int cleantext=0x7f080003;
         public static final int decryptMessage=0x7f080007;
@@ -37,7 +37,9 @@ public final class R {
         public static final int padContents=0x7f080001;
         public static final int phoneNumberTextBox=0x7f080009;
         public static final int plaintext=0x7f080006;
+        public static final int readSMSButton=0x7f08000d;
         public static final int sendMessageButton=0x7f08000b;
+        public static final int smsTextBox=0x7f08000e;
     }
     public static final class layout {
         public static final int activity_hub=0x7f030000;
@@ -54,6 +56,7 @@ public final class R {
         public static final int generatePad=0x7f050002;
         public static final int hub=0x7f050007;
         public static final int message=0x7f050006;
+        public static final int readSMS=0x7f050008;
         public static final int sendMessage=0x7f050005;
     }
     public static final class style {
