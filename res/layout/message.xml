@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/phoneNumberTextBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="phone" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/messageTextBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/sendMessageButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sendMessage"
+        android:onClick="sendMessageButtonClick" />
+
+    <Button
+        android:id="@+id/hubButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hub" 
+        android:onClick="hubScreen"/>
+
+</LinearLayout>

@@ -7,4 +7,7 @@
     <string name="generatePad">Generate Pad</string>
     <string name="encryptText">Encrypt</string>
     <string name="decryptText">Decrypt</string>
+    <string name="sendMessage">Send Message</string>
+    <string name="message">Message</string>
+    <string name="hub">Hub</string>
 </resources>

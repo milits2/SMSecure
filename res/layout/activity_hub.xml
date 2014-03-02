@@ -91,4 +91,14 @@
         android:text="@string/decryptText"
         android:onClick="decryptMessage" />
 
+    <Button
+        android:id="@+id/messageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/plaintext"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/plaintext"
+        android:onClick="messageScreen"
+        android:text="@string/message" />
+
 </RelativeLayout>
