@@ -32,7 +32,7 @@ public final class R {
         public static final int generatePad=0x7f080000;
         public static final int headerEncrypt=0x7f080002;
         public static final int hubButton=0x7f08000c;
-        public static final int messageButton=0x7f080008;
+        public static final int linkLayout=0x7f080008;
         public static final int messageTextBox=0x7f08000a;
         public static final int padContents=0x7f080001;
         public static final int phoneNumberTextBox=0x7f080009;
@@ -42,8 +42,9 @@ public final class R {
         public static final int smsTextBox=0x7f08000e;
     }
     public static final class layout {
-        public static final int activity_hub=0x7f030000;
-        public static final int message=0x7f030001;
+        public static final int activity_conversation=0x7f030000;
+        public static final int activity_hub=0x7f030001;
+        public static final int message=0x7f030002;
     }
     public static final class menu {
         public static final int hub=0x7f070000;
