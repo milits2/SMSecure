@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 public class Hub extends Activity {
 	OneTimePad pad;
-	static String[] numbers = {"7164005384", "7165746024", "8029993641"};
+	static String[] numbers = {"7164005384", "7165746024", "7168675309"};
 	Button[] conversationLinks;
 
     @Override

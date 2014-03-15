@@ -7,16 +7,45 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
-    
-	<ScrollView
+
+    <LinearLayout
+        android:id="@+id/hubHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        style="?android:attr/buttonBarStyle" >
+
+        <Button
+            android:id="@+id/addConversation"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/addConversation" />
+
+        <Button
+            android:id="@+id/modifyConversations"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/editConversations" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_below="@+id/hubHeader"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true" >
+        
 	    <LinearLayout
 	        android:id="@+id/linkLayout"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:orientation="vertical" >	
+	        android:orientation="vertical" >
 	    </LinearLayout>
-     </ScrollView>
 
+    </ScrollView>
+    
 </RelativeLayout>
