@@ -16,7 +16,7 @@
         style="?android:attr/buttonBarStyle" >
 
         <Button
-            android:id="@+id/addConversation"
+            android:id="@+id/shareOTP"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_weight="1"
             android:layout_width="0dp"
@@ -24,7 +24,7 @@
             android:text="@string/addConversation" />
 
         <Button
-            android:id="@+id/modifyConversations"
+            android:id="@+id/generateOTP"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_weight="1"
             android:layout_width="0dp"

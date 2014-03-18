@@ -1,5 +1,8 @@
 package omnicladsecurity.smsecure;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
@@ -16,8 +19,11 @@ import android.widget.TextView;
 public class Hub extends Activity {
 	OneTimePad pad;
 	static String[] numbers = {"7164005384", "7165746024", "7168675309"};
+	
 	Button[] conversationLinks;
-
+	List<TextView> messageLog;
+	
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,15 +52,36 @@ public class Hub extends Activity {
     	}
     }
     
+    public void loadMessageLog()
+    {
+    	List<String> messages = readTextMessages();
+    	LinearLayout messageLayout = (LinearLayout)findViewById(R.id.messageLayout);
+    	messageLog = new ArrayList<TextView>();
+    	int i=0;
+    	for(String message: messages) {
+    		TextView temp = new TextView(this);
+    		temp.setText(message);
+    		messageLayout.addView(temp);
+    		//messageLog.add(temp);
+    		
+    		i++;
+    	}
+    }
+    
     public void openHub() {
     	setContentView(R.layout.activity_hub);
         loadConversationLinks();
     }
     
     public void openConversation(String phoneNumber) {
-    	setContentView(R.layout.message);
-    	TextView number = (TextView)findViewById(R.id.phoneNumberTextBox);
+    	setContentView(R.layout.activity_conversation);
+    	
+    	TextView number = (TextView)findViewById(R.id.phoneNumber);
     	number.setText(phoneNumber);
+    	
+    	
+    	
+    	loadMessageLog();
     }
     
     OnClickListener clickConversation = new OnClickListener() {
@@ -73,17 +100,19 @@ public class Hub extends Activity {
     	   	
     }
     
-    public void readTextMessages(View view)
+    public List<String> readTextMessages()
     {
-    	TextView phoneNumber = (TextView)findViewById(R.id.phoneNumberTextBox);
+    	TextView phoneNumber = (TextView)findViewById(R.id.phoneNumber);
     	Cursor cursor = getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
     	cursor.moveToFirst();
-    	String msgData = "";
+
     	Boolean correctAddress = false;
+    	
+    	List<String> returnList = new ArrayList<String>();
     	
     	do{
     	   
-    	   for(int idx=0;idx<cursor.getColumnCount();idx++)
+    	   for(int idx=0; idx<cursor.getColumnCount(); idx++)
     	   {
     		   
     		   if (cursor.getColumnName(idx).equals("address") )
@@ -100,15 +129,14 @@ public class Hub extends Activity {
     		   
     		   if (cursor.getColumnName(idx).equals( "body") && correctAddress)
 			   { 
-    			   msgData += " " + cursor.getString(idx);
+    			   returnList.add(cursor.getString(idx));
 			   }
 			   
     	   }
     	}while(cursor.moveToNext());    
     	
-    	TextView smsTextBox = (TextView)findViewById(R.id.smsTextBox);
     	
-    	smsTextBox.setText(msgData);
+    	return returnList;
     }
     
     public void sendTextMessage(String text, String address) {
@@ -119,7 +147,7 @@ public class Hub extends Activity {
     public void hubScreen(View view) {
     	openHub();
     }
-    
+    /*
     public void generateOneTimePad(View view) {
     	TextView padDisplay = (TextView)findViewById(R.id.padContents);
     	pad = new OneTimePad(1024);
@@ -138,4 +166,5 @@ public class Hub extends Activity {
     	TextView output = (TextView)findViewById(R.id.plaintext);
     	output.setText(pad.decrypt(pad.cipher));
     }
+    */
 }

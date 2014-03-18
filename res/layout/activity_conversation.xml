@@ -8,87 +8,97 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <Button
-        android:id="@+id/generatePad"
-        android:layout_width="wrap_content"
+    
+    
+    <LinearLayout
+        android:id="@+id/conversationHeader"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:includeFontPadding="false"
-        android:text="@string/generatePad" 
-        android:onClick="generateOneTimePad"/>
+        android:layout_alignParentTop="true" >
 
-    <TextView
-        android:id="@+id/padContents"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/generatePad"
-        android:layout_alignRight="@+id/generatePad"
-        android:layout_below="@+id/generatePad"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        <Button
+            android:id="@+id/clearConversation"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/clear" />
 
-    <TextView
-        android:id="@+id/headerEncrypt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/padContents"
-        android:layout_below="@+id/padContents"
-        android:layout_marginTop="20dp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        <Button
+            android:id="@+id/shareOneTimePad"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/shareOTP" />
 
-    <EditText
-        android:id="@+id/cleantext"
-        android:inputType="text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/headerEncrypt"
-        android:layout_alignRight="@+id/padContents"
-        android:layout_below="@+id/headerEncrypt"
-        android:ems="10" >
-        <requestFocus />
-    </EditText>
+        <Button
+            android:id="@+id/generateOneTimePad"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/generateOTP" />
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/phoneNumberHeader"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:layout_below="@+id/conversationHeader">
 
-    <TextView
-        android:id="@+id/ciphertext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/encryptMessage"
-        android:layout_alignRight="@+id/encryptMessage"
-        android:layout_below="@+id/encryptMessage"
-        android:layout_marginTop="20dp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        <EditText
+            android:id="@+id/phoneNumber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="phone" />
 
-    <TextView
-        android:id="@+id/plaintext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/decryptMessage"
-        android:layout_alignRight="@+id/decryptMessage"
-        android:layout_below="@+id/decryptMessage"
-        android:layout_marginTop="20dp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/encryptMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/cleantext"
-        android:layout_alignRight="@+id/cleantext"
-        android:layout_below="@+id/cleantext"
-        android:layout_marginTop="20dp"
-        android:text="@string/encryptText"
-        android:onClick="encryptMessage" />
+    <ScrollView
+        android:id="@+id/messagePane"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/phoneNumberHeader"
+        android:layout_above="@+id/inputBar"
+        android:layout_centerHorizontal="true"
+        android:scrollbars="vertical" >
 
-    <Button
-        android:id="@+id/decryptMessage"
-        android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/messageLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/inputBar"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/ciphertext"
-        android:layout_alignRight="@+id/ciphertext"
-        android:layout_below="@+id/ciphertext"
-        android:layout_marginTop="20dp"
-        android:text="@string/decryptText"
-        android:onClick="decryptMessage" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true" >
+
+        <EditText
+            android:id="@+id/messageLog"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text" />
+        
+        <Button
+            android:id="@+id/sendMessage"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send" />
+    </LinearLayout>
 
 </RelativeLayout>
