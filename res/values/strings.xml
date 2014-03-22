@@ -15,8 +15,9 @@
     <string name="hub">Hub</string>
     
     <string name="readSMS">Read SMS</string>
-    <string name="generateOTP">Generate OTP</string>
-    <string name="shareOTP">Share OTP</string>
+    <string name="generateOTP">Gen</string>
+    <string name="shareOTP">Share</string>
+    <string name="loadOTP">Load</string>
     <string name="clear">Clear</string>
     <string name="send">Send</string>
 </resources>

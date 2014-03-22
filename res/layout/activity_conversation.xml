@@ -26,6 +26,14 @@
             android:text="@string/clear" />
 
         <Button
+            android:id="@+id/generateOneTimePad"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/generateOTP" />
+
+        <Button
             android:id="@+id/shareOneTimePad"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
@@ -34,12 +42,12 @@
             android:text="@string/shareOTP" />
 
         <Button
-            android:id="@+id/generateOneTimePad"
+            android:id="@+id/loadOneTimePad"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/generateOTP" />
+            android:text="@string/loadOTP" />
     </LinearLayout>
     
     <LinearLayout
