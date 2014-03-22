@@ -147,6 +147,8 @@ public class Hub extends Activity {
     public void hubScreen(View view) {
     	openHub();
     }
+    
+    
     /*
     public void generateOneTimePad(View view) {
     	TextView padDisplay = (TextView)findViewById(R.id.padContents);
