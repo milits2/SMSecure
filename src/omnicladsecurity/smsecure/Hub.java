@@ -26,8 +26,7 @@ public class Hub extends Activity {
 	
 	Button[] conversationLinks;
 	List<TextView> messageLog;
-	
-	
+		
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +55,7 @@ public class Hub extends Activity {
     	}
     }
     
-    public void loadMessageLog()
-    {
+    public void loadMessageLog() {
     	List<String> messages = readTextMessages();
     	LinearLayout messageLayout = (LinearLayout)findViewById(R.id.messageLayout);
     	messageLog = new ArrayList<TextView>();
@@ -82,9 +80,7 @@ public class Hub extends Activity {
     	
     	TextView number = (TextView)findViewById(R.id.phoneNumber);
     	number.setText(phoneNumber);
-    	
-    	
-    	
+
     	loadMessageLog();
     }
     
@@ -95,8 +91,7 @@ public class Hub extends Activity {
 		}
     };
 
-    public void sendMessageButtonClick(View view)
-    {
+    public void sendMessageButtonClick(View view) {
     	TextView phoneNumber = (TextView)findViewById(R.id.phoneNumberTextBox);
     	TextView message = (TextView)findViewById(R.id.messageTextBox);
     	
@@ -104,8 +99,7 @@ public class Hub extends Activity {
     	   	
     }
     
-    public List<String> readTextMessages()
-    {
+    public List<String> readTextMessages() {
     	TextView phoneNumber = (TextView)findViewById(R.id.phoneNumber);
     	Cursor cursor = getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
     	cursor.moveToFirst();
@@ -115,30 +109,22 @@ public class Hub extends Activity {
     	List<String> returnList = new ArrayList<String>();
     	
     	do{
-    	   
-    	   for(int idx=0; idx<cursor.getColumnCount(); idx++)
-    	   {
-    		   
-    		   if (cursor.getColumnName(idx).equals("address") )
-			   {
-    			   if (cursor.getString(idx).equals(phoneNumber.getText().toString()))
-				   {
+    	   for(int idx=0; idx<cursor.getColumnCount(); idx++) {
+    		   if (cursor.getColumnName(idx).equals("address") ) {
+    			   if (cursor.getString(idx).equals(phoneNumber.getText().toString())) {
     				   correctAddress = true;
 				   }
-    			   else
-    			   {
+    			   else {
     				   correctAddress = false;
     			   }
 			   }
     		   
-    		   if (cursor.getColumnName(idx).equals( "body") && correctAddress)
-			   { 
+    		   if (cursor.getColumnName(idx).equals( "body") && correctAddress) { 
     			   returnList.add(cursor.getString(idx));
 			   }
 			   
     	   }
     	}while(cursor.moveToNext());    
-    	
     	
     	return returnList;
     }
