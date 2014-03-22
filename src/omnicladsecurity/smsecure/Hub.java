@@ -1,13 +1,17 @@
 package omnicladsecurity.smsecure;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.Object;
 
 import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -148,7 +152,28 @@ public class Hub extends Activity {
     	openHub();
     }
     
+    ///////////////// START OF SD CARD STORAGE/////////////////////////////////////////////////
+    void createExternalStoragePad() {
+    	//Create a path where we will place the one time pad
+    	//this is in public directory because removal of external storage deletes private app data
+    	
+    	File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+    	File file = new File(path, "716-888-8888.txt");
+    	
+    	try {
+    		//Make sure directory exists
+    		path.mkdirs();
+    		
+    		
+    	}
+    }
     
+    File getExternalStoragePad() {
+    	File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+    	File file = new File(path, "716-888-8888.txt");
+    	return file;
+    }
+    ///////////END SD CARD STORAGE//////////////////////////////////////////////////////////////
     /*
     public void generateOneTimePad(View view) {
     	TextView padDisplay = (TextView)findViewById(R.id.padContents);
