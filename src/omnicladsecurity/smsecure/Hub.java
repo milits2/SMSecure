@@ -1,12 +1,16 @@
 package omnicladsecurity.smsecure;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.Object;
 
 import android.app.Activity;
 import android.database.Cursor;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -139,26 +143,46 @@ public class Hub extends Activity {
     }
     
     ///////////////// START OF SD CARD STORAGE/////////////////////////////////////////////////
-    void createExternalStoragePad() {
+    //Currently pass a dummy pad, this needs to actually use the conversations pad once that is implemented
+    void createExternalStoragePad( OneTimePad pad) {
     	//Create a path where we will place the one time pad
     	//this is in public directory because removal of external storage deletes private app data
     	
     	File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
     	File file = new File(path, "716-888-8888.txt");
     	
+    	pad = new OneTimePad(1024);
+    	
     	try {
-    		//Make sure directory exists
-    		path.mkdirs();
-    		
-    		
-    	}
+            // Make sure the directory exists
+            path.mkdirs();
+
+            OutputStream os = new FileOutputStream(file);
+            os.write(pad.pad);
+            os.close();
+
+            // Tell the media scanner about the new file so that it is
+            // immediately available to the user.
+            MediaScannerConnection.scanFile(this,
+                    new String[] { file.toString() }, null,
+                    new MediaScannerConnection.OnScanCompletedListener() {
+                public void onScanCompleted(String path, Uri uri) {
+                    Log.i("ExternalStorage", "Scanned " + path + ":");
+                    Log.i("ExternalStorage", "-> uri=" + uri);
+                }
+            });
+        } catch (IOException e) {
+            // Unable to create file, likely because external storage is
+            // not currently mounted.
+            Log.w("ExternalStorage", "Error writing " + file, e);
+        }
     }
-    
+    /*
     File getExternalStoragePad() {
     	File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
     	File file = new File(path, "716-888-8888.txt");
     	return file;
-    }
+    }*/
     ///////////END SD CARD STORAGE//////////////////////////////////////////////////////////////
     /*
     public void generateOneTimePad(View view) {
