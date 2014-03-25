@@ -144,10 +144,19 @@ public class Hub extends Activity {
     
     ///////////////// START OF SD CARD STORAGE/////////////////////////////////////////////////
     //Currently pass a dummy pad, this needs to actually use the conversations pad once that is implemented
-    void createExternalStoragePad( OneTimePad pad) {
+    
+        
+    OnClickListener clickSDStorage = new OnClickListener() {
+    	@Override
+    	public void onClick(View view) {
+    		createExternalStoragePad();
+		}
+    };
+    
+    void createExternalStoragePad( ) {
     	//Create a path where we will place the one time pad
     	//this is in public directory because removal of external storage deletes private app data
-    	
+    	OneTimePad pad;
     	File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
     	File file = new File(path, "716-888-8888.txt");
     	
@@ -183,7 +192,7 @@ public class Hub extends Activity {
     	File file = new File(path, "716-888-8888.txt");
     	return file;
     }*/
-    ///////////END SD CARD STORAGE//////////////////////////////////////////////////////////////
+    ///////////END SD CARD STORAGE//////////////////////////////////////////////////////*////////
     /*
     public void generateOneTimePad(View view) {
     	TextView padDisplay = (TextView)findViewById(R.id.padContents);
