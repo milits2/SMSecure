@@ -95,6 +95,9 @@ public class Hub extends Activity {
 		}
     };
 
+    public void generateOneTimePadButtonClick(View view) {
+    	createExternalStoragePad();
+    }
     public void sendMessageButtonClick(View view) {
     	TextView phoneNumber = (TextView)findViewById(R.id.phoneNumberTextBox);
     	TextView message = (TextView)findViewById(R.id.messageTextBox);
@@ -157,8 +160,9 @@ public class Hub extends Activity {
     	//Create a path where we will place the one time pad
     	//this is in public directory because removal of external storage deletes private app data
     	OneTimePad pad;
-    	File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-    	File file = new File(path, "716-888-8888.txt");
+    	//File path = Environment.getExternalStorageDirectory();
+    	File path = new File("/storage/sdcard1");
+    	File file = new File(path, "Pad.txt");
     	
     	pad = new OneTimePad(1024);
     	

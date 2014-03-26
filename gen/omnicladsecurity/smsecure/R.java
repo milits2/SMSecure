@@ -65,6 +65,7 @@ public final class R {
         public static final int editConversations=0x7f050003;
         public static final int encryptText=0x7f050005;
         public static final int generateOTP=0x7f05000b;
+        public static final int generateOneTimePadButtonClick=0x7f050010;
         public static final int generatePad=0x7f050004;
         public static final int hub=0x7f050009;
         public static final int loadOTP=0x7f05000d;
