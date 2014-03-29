@@ -56,6 +56,27 @@ public class Hub extends Activity {
     	}
     }
     
+    OnClickListener clickConversation = new OnClickListener() {
+    	@Override
+    	public void onClick(View view) {
+    		openConversation(view.getTag().toString());
+		}
+    };
+    
+    public void openConversation(String phoneNumber) {
+    	setContentView(R.layout.activity_conversation);
+    	
+    	TextView number = (TextView)findViewById(R.id.phoneNumber);
+    	number.setText(phoneNumber);
+
+    	loadMessageLog();
+    }
+    
+    public void openHub() {
+    	setContentView(R.layout.activity_hub);
+        loadConversationLinks();
+    }
+    
     public void loadMessageLog() {
     	List<String> messages = readTextMessages();
     	LinearLayout messageLayout = (LinearLayout)findViewById(R.id.messageLayout);
@@ -67,27 +88,6 @@ public class Hub extends Activity {
     		messageLayout.addView(temp);
     	}
     }
-    
-    public void openHub() {
-    	setContentView(R.layout.activity_hub);
-        loadConversationLinks();
-    }
-    
-    public void openConversation(String phoneNumber) {
-    	setContentView(R.layout.activity_conversation);
-    	
-    	TextView number = (TextView)findViewById(R.id.phoneNumber);
-    	number.setText(phoneNumber);
-
-    	loadMessageLog();
-    }
-    
-    OnClickListener clickConversation = new OnClickListener() {
-    	@Override
-    	public void onClick(View view) {
-    		openConversation(view.getTag().toString());
-		}
-    };
 
     public void generateOneTimePadButtonClick(View view) {
     	createExternalStoragePad();
@@ -103,7 +103,7 @@ public class Hub extends Activity {
     	List<String> returnList = new ArrayList<String>();
     	
     	do{
-    	   for(int idx=0; idx<cursor.getColumnCount(); idx++) {
+    	   for(int idx = 0; idx < cursor.getColumnCount(); idx++) {
     		   if (cursor.getColumnName(idx).equals("address") ) {
     			   if (cursor.getString(idx).equals(phoneNumber.getText().toString())) {
     				   correctAddress = true;
@@ -111,14 +111,12 @@ public class Hub extends Activity {
     			   else {
     				   correctAddress = false;
     			   }
-			   }
-    		   
+			   }    		   
     		   if (cursor.getColumnName(idx).equals( "body") && correctAddress) { 
     			   returnList.add(cursor.getString(idx));
-			   }
-			   
+			   }			   
     	   }
-    	}while(cursor.moveToNext());    
+    	}while(cursor.moveToNext());
     	
     	return returnList;
     }

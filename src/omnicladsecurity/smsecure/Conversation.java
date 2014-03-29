@@ -15,7 +15,7 @@ public class Conversation {
 		// TODO
 	}
 	
-	public String readMessage(String message) {
+	public String decryptText(String message) {
 		// Encrypted messages will be of the form |~|offset|message
 		if(message.startsWith("|~|")) {
 			// Find the offset.
@@ -38,7 +38,7 @@ public class Conversation {
 		return "";
 	}
 	
-	public String sendMessage(String message) {
+	public String encryptText(String message) {
 		// Encrypted messages will be of the form |~|offset|message
 		String prefix = "|~|" + localPad.getOffset() + "|";
 		String suffix;
