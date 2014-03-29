@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -27,7 +28,6 @@ import android.widget.TextView;
 
 public class Hub extends Activity {	
 	// Dynamic elements
-	Button[] conversationLinks;
 	List<TextView> messageLog;
 	static String[] numbers = {"7164005384", "7168675309", "8029993641"};
 	
@@ -60,14 +60,13 @@ public class Hub extends Activity {
     	// Remove any links it currently has.
     	linkLayout.removeAllViewsInLayout();
     	// Load the list of conversations we have.
-    	conversationLinks = new Button[numbers.length];
     	int i = 0;
     	for(String number: numbers) {
-    		conversationLinks[i] = new Button(this);
-    		conversationLinks[i].setTag(number);
-    		conversationLinks[i].setText("Conversation with " + number);
-    		conversationLinks[i].setOnClickListener(clickConversation);
-    		linkLayout.addView(conversationLinks[i]);
+    		Button conversationLink = new Button(this);
+    		conversationLink.setTag(number);
+    		conversationLink.setText("Conversation with " + number);
+    		conversationLink.setOnClickListener(clickConversation);
+    		linkLayout.addView(conversationLink);
     		++i;
     	}
     }
