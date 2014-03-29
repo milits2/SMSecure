@@ -8,15 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,7 +28,7 @@ public class Hub extends Activity {
 	// Dynamic elements
 	Button[] conversationLinks;
 	List<TextView> messageLog;
-	static String[] numbers = {"7164005384", "7165746024", "7168675309"};
+	static String[] numbers = {"7164005384", "7168675309", "8029993641"};
 	
 	Conversation activeConversation;
 		
@@ -45,8 +49,15 @@ public class Hub extends Activity {
     |* Hub management
     \********/
     
+    public void openHub() {
+    	setContentView(R.layout.activity_hub);
+        loadConversationLinks();
+    }
+    
     public void loadConversationLinks() {
     	LinearLayout linkLayout = (LinearLayout)findViewById(R.id.linkLayout);
+    	// Remove any links it currently has.
+    	linkLayout.removeAllViewsInLayout();
     	// Load the list of conversations we have.
     	conversationLinks = new Button[numbers.length];
     	int i = 0;
@@ -58,6 +69,49 @@ public class Hub extends Activity {
     		linkLayout.addView(conversationLinks[i]);
     		++i;
     	}
+    }
+    
+    public void addConversationButton(View view) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    builder.setTitle("Add Conversation");
+		// Set up the input
+		final EditText numberInput = new EditText(this);
+		numberInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+		builder.setView(numberInput);
+		// Set up the buttons
+		builder.setPositiveButton("Add", new DialogInterface.OnClickListener() { 
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		    	String input = numberInput.getText().toString();
+		    	if(input.length() == 10) {
+		    		addConversation(numberInput.getText().toString());
+		    	}
+		    	//numbers.add(input.getText().toString());
+		    }
+		});
+		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		        dialog.cancel();
+		    }
+		});
+		builder.show();
+    }
+    
+    public void addConversation(String number) {
+    	// TODO add memory interaction
+    	String[] newNumbers = new String[numbers.length + 1];
+    	for(int i = 0; i < numbers.length; ++i) {
+    		newNumbers[i+1] = numbers[i];
+    	}
+    	newNumbers[0] = number;
+    	numbers = newNumbers;
+    	
+    	loadConversationLinks();
+    }
+    
+    public void editConversationsButton(View view) {
+    	// TODO implement
     }
     
     OnClickListener clickConversation = new OnClickListener() {
@@ -80,11 +134,6 @@ public class Hub extends Activity {
     /********\
     |* Conversation management
     \********/
-    
-    public void openHub() {
-    	setContentView(R.layout.activity_hub);
-        loadConversationLinks();
-    }
     
     public void loadMessageLog() {
     	List<String> messages = activeConversation.loadTextMessages();
