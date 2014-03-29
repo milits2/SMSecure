@@ -1,5 +1,7 @@
 package omnicladsecurity.smsecure;
 
+import java.io.UnsupportedEncodingException;
+
 public class Conversation {
 	// The Conversation class contains the pertinent information for a conversation.
 	// They are loaded upon opening a conversation and populate themselves.
@@ -29,7 +31,8 @@ public class Conversation {
 			}
 			
 			// Decrypt the message.
-			return contactPad.decrypt(components[2], offset);
+			contactPad.setOffset(offset);
+			return contactPad.decrypt(components[2].getBytes());
 		}
 		// If it doesn't have the prefix, skip the message.
 		return "";
@@ -37,8 +40,13 @@ public class Conversation {
 	
 	public String sendMessage(String message) {
 		// Encrypted messages will be of the form |~|offset|message
-		String prefix = "|~|" + localPad.offset() + "|";
-		String suffix = localPad.encrypt(message, localPad.offset());
+		String prefix = "|~|" + localPad.getOffset() + "|";
+		String suffix;
+		try {
+			suffix = new String(localPad.encrypt(message), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			suffix = "";
+		}
 		return prefix + suffix;
 	}
 }

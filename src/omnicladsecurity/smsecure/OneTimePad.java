@@ -5,27 +5,31 @@ import java.util.Random;
 
 public class OneTimePad {
 	public byte[] pad;
-	public byte[] cipher;
+	int offset;
 	
 	public OneTimePad(int padLength) {
 		// Generate padLength characters.
 		pad = new byte[padLength];
 		Random pGen = new Random();
 		pGen.nextBytes(pad);
+		
+		offset = 0;
 	}
 	
 	public byte[] encrypt(String plaintext) {
+		// Offset is updated by encrypt.
 		byte[] plain = plaintext.getBytes();
-		cipher = new byte[plain.length];
-		int offset = 0;
+		byte[] cipher = new byte[plain.length];
+		int encryptShift = offset;
 		for(byte b: plain) {
-			cipher[offset] = (byte)(b + (byte)pad[offset]);
+			cipher[offset - encryptShift] = (byte)(b + (byte)pad[offset]);
 			++offset;
 		}
 		return cipher;
 	}
 	
 	public String decrypt(byte[] ciphertext) {
+		// Decrypt must have offset set before it is run.
 		byte[] plain = new byte[ciphertext.length];
 		int offset = 0;
 		for(byte b: ciphertext) {
@@ -40,5 +44,12 @@ public class OneTimePad {
 			visible = "ERROR";
 		}
 		return visible;
+	}
+	
+	public int getOffset() {
+		return offset;
+	}
+	public void setOffset(int newOffset) {
+		offset = newOffset;
 	}
 }
