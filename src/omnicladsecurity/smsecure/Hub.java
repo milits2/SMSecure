@@ -102,7 +102,7 @@ public class Hub extends Activity {
     	
     	List<String> returnList = new ArrayList<String>();
     	
-    	do{
+    	while(cursor.moveToNext()) {
     	   for(int idx = 0; idx < cursor.getColumnCount(); idx++) {
     		   if (cursor.getColumnName(idx).equals("address") ) {
     			   if (cursor.getString(idx).equals(phoneNumber.getText().toString())) {
@@ -116,7 +116,7 @@ public class Hub extends Activity {
     			   returnList.add(cursor.getString(idx));
 			   }			   
     	   }
-    	}while(cursor.moveToNext());
+    	} 
     	
     	return returnList;
     }
