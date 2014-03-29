@@ -6,21 +6,18 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.lang.Object;
 
 import android.app.Activity;
 import android.database.Cursor;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -63,14 +60,11 @@ public class Hub extends Activity {
     	List<String> messages = readTextMessages();
     	LinearLayout messageLayout = (LinearLayout)findViewById(R.id.messageLayout);
     	messageLog = new ArrayList<TextView>();
-    	int i=0;
+
     	for(String message: messages) {
     		TextView temp = new TextView(this);
     		temp.setText(message);
     		messageLayout.addView(temp);
-    		//messageLog.add(temp);
-    		
-    		i++;
     	}
     }
     
@@ -97,13 +91,6 @@ public class Hub extends Activity {
 
     public void generateOneTimePadButtonClick(View view) {
     	createExternalStoragePad();
-    }
-    public void sendMessageButtonClick(View view) {
-    	TextView phoneNumber = (TextView)findViewById(R.id.phoneNumberTextBox);
-    	TextView message = (TextView)findViewById(R.id.messageTextBox);
-    	
-    	sendTextMessage(message.getText().toString(), phoneNumber.getText().toString());
-    	   	
     }
     
     public List<String> readTextMessages() {
@@ -145,9 +132,10 @@ public class Hub extends Activity {
     	openHub();
     }
     
-    ///////////////// START OF SD CARD STORAGE/////////////////////////////////////////////////
-    //Currently pass a dummy pad, this needs to actually use the conversations pad once that is implemented
-    
+    /********\
+    |* Start of SD card storage
+    |* TODO make it not use a dummy pad
+    \********/
         
     OnClickListener clickSDStorage = new OnClickListener() {
     	@Override
@@ -196,26 +184,8 @@ public class Hub extends Activity {
     	File file = new File(path, "Pad.txt");
     	
     	return file;
-    }
-    ///////////END SD CARD STORAGE//////////////////////////////////////////////////////*////////
-    /*
-    public void generateOneTimePad(View view) {
-    	TextView padDisplay = (TextView)findViewById(R.id.padContents);
-    	pad = new OneTimePad(1024);
-    	padDisplay.setText("Pad created.");
-    }
-    
-    public void encryptMessage(View view) {
-    	EditText input = (EditText)findViewById(R.id.cleantext);
-    	TextView output = (TextView)findViewById(R.id.ciphertext);
-    	pad.cipher = pad.encrypt(input.getText().toString());
-    	
-    	output.setText("Message encrypted.");
-    }
-    
-    public void decryptMessage(View view) {
-    	TextView output = (TextView)findViewById(R.id.plaintext);
-    	output.setText(pad.decrypt(pad.cipher));
-    }
-    */
+    }    
+    /********\
+    |* End of SD card storage
+    \********/
 }
