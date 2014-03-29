@@ -190,12 +190,13 @@ public class Hub extends Activity {
             Log.w("ExternalStorage", "Error writing " + file, e);
         }
     }
-    /*
+    
     File getExternalStoragePad() {
-    	File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-    	File file = new File(path, "716-888-8888.txt");
+    	File path = new File("/storage/sdcard1");
+    	File file = new File(path, "Pad.txt");
+    	
     	return file;
-    }*/
+    }
     ///////////END SD CARD STORAGE//////////////////////////////////////////////////////*////////
     /*
     public void generateOneTimePad(View view) {
