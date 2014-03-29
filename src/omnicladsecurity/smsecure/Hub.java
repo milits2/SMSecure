@@ -80,7 +80,7 @@ public class Hub extends Activity {
     }
     
     public void loadMessageLog() {
-    	List<String> messages = activeConversation.readTextMessages();
+    	List<String> messages = activeConversation.loadTextMessages();
     	LinearLayout messageLayout = (LinearLayout)findViewById(R.id.messageLayout);
     	messageLog = new ArrayList<TextView>();
 
@@ -93,7 +93,8 @@ public class Hub extends Activity {
     
     public void sendTextMessage(String text, String address) {
     	SmsManager smsManager = SmsManager.getDefault();
-    	smsManager.sendTextMessage(address, null, text, null, null);
+    	String messageText = activeConversation.prepareTextMessage(text);
+    	smsManager.sendTextMessage(address, null, messageText, null, null);
     }
     
     /********\

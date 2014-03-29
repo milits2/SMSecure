@@ -21,7 +21,7 @@ public class Conversation {
 		this.handler = new MessageHandler(withNumber);
 	}
 	
-	public List<String> readTextMessages() {
+	public List<String> loadTextMessages() {
     	Cursor cursor = context.getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
     	cursor.moveToFirst();
 
@@ -39,12 +39,18 @@ public class Conversation {
     				   correctAddress = false;
     			   }
 			   }    		   
-    		   if (cursor.getColumnName(idx).equals( "body") && correctAddress) { 
+    		   if (cursor.getColumnName(idx).equals( "body") && correctAddress) {
+    			   // TODO decryption goes here
     			   returnList.add(cursor.getString(idx));
 			   }			   
     	   }
     	} 
     	
     	return returnList;
+	}
+	
+	public String prepareTextMessage(String text) {
+		// TODO encryption goes here
+		return text;
 	}
 }
