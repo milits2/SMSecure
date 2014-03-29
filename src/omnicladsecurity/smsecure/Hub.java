@@ -21,12 +21,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class Hub extends Activity {
-	OneTimePad pad;
-	static String[] numbers = {"7164005384", "7165746024", "7168675309"};
-	
+public class Hub extends Activity {	
+	// Dynamic elements
 	Button[] conversationLinks;
 	List<TextView> messageLog;
+	static String[] numbers = {"7164005384", "7165746024", "7168675309"};
+	
+	Conversation activeConversation;
 		
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,11 @@ public class Hub extends Activity {
 		}
     };
     
+    public void openHub() {
+    	setContentView(R.layout.activity_hub);
+        loadConversationLinks();
+    }
+    
     public void openConversation(String phoneNumber) {
     	setContentView(R.layout.activity_conversation);
     	
@@ -70,11 +76,6 @@ public class Hub extends Activity {
     	number.setText(phoneNumber);
 
     	loadMessageLog();
-    }
-    
-    public void openHub() {
-    	setContentView(R.layout.activity_hub);
-        loadConversationLinks();
     }
     
     public void loadMessageLog() {
@@ -87,10 +88,6 @@ public class Hub extends Activity {
     		temp.setText(message);
     		messageLayout.addView(temp);
     	}
-    }
-
-    public void generateOneTimePadButtonClick(View view) {
-    	createExternalStoragePad();
     }
     
     public List<String> readTextMessages() {
@@ -126,14 +123,14 @@ public class Hub extends Activity {
     	smsManager.sendTextMessage(address, null, text, null, null);
     }
     
-    public void hubScreen(View view) {
-    	openHub();
-    }
-    
     /********\
     |* Start of SD card storage
     |* TODO make it not use a dummy pad
     \********/
+
+    public void generateOneTimePadButtonClick(View view) {
+    	createExternalStoragePad();
+    }
         
     OnClickListener clickSDStorage = new OnClickListener() {
     	@Override
