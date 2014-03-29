@@ -10,6 +10,22 @@ public class MessageHandler {
 		// TODO actually load the pads
 	}
 	
+	void setLocalPad(OneTimePad newPad) {
+		// TODO
+	}
+	
+	OneTimePad getLocalPad() {
+		return localPad;
+	}
+	
+	void setContactPad(OneTimePad newPad) {
+		// TODO
+	}
+	
+	OneTimePad getContactPad() {
+		return contactPad;
+	}
+	
 	public String decryptText(String message) {
 		// Encrypted messages will be of the form |~|offset|message
 		if(message.startsWith("|~|")) {

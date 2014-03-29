@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.database.Cursor;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,6 +41,10 @@ public class Hub extends Activity {
         return true;
     }
     
+    /********\
+    |* Hub management
+    \********/
+    
     public void loadConversationLinks() {
     	LinearLayout linkLayout = (LinearLayout)findViewById(R.id.linkLayout);
     	// Load the list of conversations we have.
@@ -64,11 +67,6 @@ public class Hub extends Activity {
 		}
     };
     
-    public void openHub() {
-    	setContentView(R.layout.activity_hub);
-        loadConversationLinks();
-    }
-    
     public void openConversation(String phoneNumber) {
     	setContentView(R.layout.activity_conversation);
     	activeConversation = new Conversation(this.getApplicationContext(), phoneNumber);
@@ -77,6 +75,15 @@ public class Hub extends Activity {
     	number.setText(phoneNumber);
 
     	loadMessageLog();
+    }
+    
+    /********\
+    |* Conversation management
+    \********/
+    
+    public void openHub() {
+    	setContentView(R.layout.activity_hub);
+        loadConversationLinks();
     }
     
     public void loadMessageLog() {
@@ -98,7 +105,7 @@ public class Hub extends Activity {
     }
     
     /********\
-    |* Start of SD card storage
+    |* SD card storage
     |* TODO make it not use a dummy pad
     \********/
 
@@ -153,8 +160,5 @@ public class Hub extends Activity {
     	File file = new File(path, "Pad.txt");
     	
     	return file;
-    }    
-    /********\
-    |* End of SD card storage
-    \********/
+    }
 }
