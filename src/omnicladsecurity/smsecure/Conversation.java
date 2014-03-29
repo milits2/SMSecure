@@ -1,6 +1,7 @@
 package omnicladsecurity.smsecure;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
@@ -21,15 +22,23 @@ public class Conversation {
 		this.handler = new MessageHandler(withNumber);
 	}
 	
+	public String getContactNumber() {
+		return contactNumber;
+	}
+	
 	public List<String> loadTextMessages() {
     	Cursor cursor = context.getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
+    	if(cursor == null) {
+    		return new ArrayList<String>();
+    	}
+    	
     	cursor.moveToFirst();
 
     	Boolean correctAddress = false;
     	
     	List<String> returnList = new ArrayList<String>();
     	
-    	while(cursor.moveToNext()) {
+    	do {
     	   for(int idx = 0; idx < cursor.getColumnCount(); idx++) {
     		   if (cursor.getColumnName(idx).equals("address") ) {
     			   if (cursor.getString(idx).equals(contactNumber)) {
@@ -45,8 +54,9 @@ public class Conversation {
     			   returnList.add(plaintext);
 			   }			   
     	   }
-    	} 
+    	} while(cursor.moveToNext());
     	
+    	Collections.reverse(returnList);
     	return returnList;
 	}
 	

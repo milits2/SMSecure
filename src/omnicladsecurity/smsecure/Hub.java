@@ -10,6 +10,7 @@ import java.util.List;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
@@ -140,11 +141,32 @@ public class Hub extends Activity {
     	LinearLayout messageLayout = (LinearLayout)findViewById(R.id.messageLayout);
     	messageLog = new ArrayList<TextView>();
 
+    	boolean colorOn = true;;
     	for(String message: messages) {
     		TextView temp = new TextView(this);
     		temp.setText(message);
+    		temp.setTextSize(36);
+    		temp.setPadding(6, 12, 0, 6);
+    		
+    		if(colorOn) {
+    			temp.setBackgroundColor(Color.parseColor("#EFEFFF"));
+    		}
+    		else {
+    			temp.setBackgroundColor(Color.parseColor("#DFDFFF"));
+    		}
+    		colorOn = !colorOn;
+    		
     		messageLayout.addView(temp);
     	}
+    }
+    
+    public void backToHubButtonClick(View view) {
+    	openHub();
+    }
+    
+    public void sendTextMessageButtonClick(View view) {
+    	TextView text = (TextView)findViewById(R.id.messageText);
+    	sendTextMessage(text.getText().toString(), activeConversation.getContactNumber());	
     }
     
     public void sendTextMessage(String text, String address) {
@@ -169,7 +191,7 @@ public class Hub extends Activity {
 		}
     };
     
-    void createExternalStoragePad( ) {
+    void createExternalStoragePad() {
     	//Create a path where we will place the one time pad
     	//this is in public directory because removal of external storage deletes private app data
     	OneTimePad pad;
@@ -184,7 +206,7 @@ public class Hub extends Activity {
             path.mkdirs();
 
             OutputStream os = new FileOutputStream(file);
-            os.write(pad.pad);
+            os.write(new String(pad.pad).getBytes());
             os.close();
 
             // Tell the media scanner about the new file so that it is

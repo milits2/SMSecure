@@ -1,49 +1,43 @@
 package omnicladsecurity.smsecure;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
 public class OneTimePad {
-	public byte[] pad;
+    public char[] pad;
 	int offset;
 	
 	public OneTimePad(int padLength) {
 		// Generate padLength characters.
-		pad = new byte[padLength];
-		Random pGen = new Random();
-		pGen.nextBytes(pad);
+		pad = new char[padLength];
+		Random pGen = new Random(413);        
+        for(int i = 0; i < padLength; ++i) {
+            pad[i] = (char)pGen.nextInt(150);
+        }
 		
 		offset = 0;
 	}
 	
-	public byte[] encrypt(String plaintext) {
+	public String encrypt(String plaintext) {
 		// Offset is updated by encrypt.
-		byte[] plain = plaintext.getBytes();
-		byte[] cipher = new byte[plain.length];
+		char[] plain = plaintext.toCharArray();
+		char[] cipher = new char[plain.length];
 		int encryptShift = offset;
-		for(byte b: plain) {
-			cipher[offset - encryptShift] = (byte)(b + (byte)pad[offset]);
+		for(char b: plain) {
+			cipher[offset - encryptShift] = (char)(b + pad[offset]);
 			++offset;
 		}
-		return cipher;
+		return new String(cipher);
 	}
 	
-	public String decrypt(byte[] ciphertext) {
+	public String decrypt(char[] ciphertext) {
 		// Decrypt must have offset set before it is run.
-		byte[] plain = new byte[ciphertext.length];
-		int offset = 0;
-		for(byte b: ciphertext) {
-			plain[offset] = (byte)(b - pad[offset]);
+		char[] plain = new char[ciphertext.length];
+		int encryptShift = offset;
+		for(char b: ciphertext) {
+			plain[offset - encryptShift] = (char)(b - pad[offset]);
 			++offset;
-		}
-		
-		String visible;
-		try {
-			visible = new String(plain, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			visible = "ERROR";
-		}
-		return visible;
+		}		
+		return new String(plain);
 	}
 	
 	public int getOffset() {

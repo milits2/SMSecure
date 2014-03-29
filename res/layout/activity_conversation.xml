@@ -18,12 +18,13 @@
         android:layout_alignParentTop="true" >
 
         <Button
-            android:id="@+id/clearConversation"
+            android:id="@+id/backToHub"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/clear" />
+            android:onClick="backToHubButtonClick"
+            android:text="@string/backToHub" />
 
         <Button
             android:id="@+id/generateOneTimePad"
@@ -95,7 +96,7 @@
         android:layout_alignParentLeft="true" >
 
         <EditText
-            android:id="@+id/messageLog"
+            android:id="@+id/messageText"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -107,6 +108,7 @@
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="sendTextMessageButtonClick"
             android:text="@string/send" />
     </LinearLayout>
 

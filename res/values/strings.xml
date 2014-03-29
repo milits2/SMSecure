@@ -18,7 +18,7 @@
     <string name="generateOTP">Gen</string>
     <string name="shareOTP">Share</string>
     <string name="loadOTP">Load</string>
-    <string name="clear">Clear</string>
+    <string name="backToHub">Back</string>
     <string name="send">Send</string>
     <string name="generateOneTimePadButtonClick">generateOneTimePad</string>
 </resources>
