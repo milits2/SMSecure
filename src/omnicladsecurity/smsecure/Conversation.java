@@ -40,8 +40,9 @@ public class Conversation {
     			   }
 			   }    		   
     		   if (cursor.getColumnName(idx).equals( "body") && correctAddress) {
-    			   // TODO decryption goes here
-    			   returnList.add(cursor.getString(idx));
+    			   String ciphertext = cursor.getString(idx);
+    			   String plaintext = handler.decryptText(ciphertext);
+    			   returnList.add(plaintext);
 			   }			   
     	   }
     	} 
@@ -50,7 +51,6 @@ public class Conversation {
 	}
 	
 	public String prepareTextMessage(String text) {
-		// TODO encryption goes here
-		return text;
+		return handler.encryptText(text);
 	}
 }

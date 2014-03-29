@@ -29,24 +29,24 @@ public class MessageHandler {
 	public String decryptText(String message) {
 		// Encrypted messages will be of the form |~|offset|message
 		if(message.startsWith("|~|")) {
-			// Find the offset.
+			// Find the offset/verify that it's properly formed.
 			int offset;
 			String[] components = message.split("|");
 			if(components.length != 3) {
-				return "";
+				return message;
 			}
 			try {
 				offset = Integer.parseInt(components[1]);
 			} catch(NumberFormatException e) {
-				return "";
+				return message;
 			}
 			
 			// Decrypt the message.
 			contactPad.setOffset(offset);
-			return contactPad.decrypt(components[2].getBytes());
+			return "[S] " + contactPad.decrypt(components[2].getBytes());
 		}
 		// If it doesn't have the prefix, skip the message.
-		return "";
+		return message;
 	}
 	
 	public String encryptText(String message) {
