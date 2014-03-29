@@ -71,6 +71,7 @@ public class Hub extends Activity {
     
     public void openConversation(String phoneNumber) {
     	setContentView(R.layout.activity_conversation);
+    	activeConversation = new Conversation(this.getApplicationContext(), phoneNumber);
     	
     	TextView number = (TextView)findViewById(R.id.phoneNumber);
     	number.setText(phoneNumber);
@@ -79,7 +80,7 @@ public class Hub extends Activity {
     }
     
     public void loadMessageLog() {
-    	List<String> messages = readTextMessages();
+    	List<String> messages = activeConversation.readTextMessages();
     	LinearLayout messageLayout = (LinearLayout)findViewById(R.id.messageLayout);
     	messageLog = new ArrayList<TextView>();
 
@@ -88,34 +89,6 @@ public class Hub extends Activity {
     		temp.setText(message);
     		messageLayout.addView(temp);
     	}
-    }
-    
-    public List<String> readTextMessages() {
-    	TextView phoneNumber = (TextView)findViewById(R.id.phoneNumber);
-    	Cursor cursor = getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
-    	cursor.moveToFirst();
-
-    	Boolean correctAddress = false;
-    	
-    	List<String> returnList = new ArrayList<String>();
-    	
-    	while(cursor.moveToNext()) {
-    	   for(int idx = 0; idx < cursor.getColumnCount(); idx++) {
-    		   if (cursor.getColumnName(idx).equals("address") ) {
-    			   if (cursor.getString(idx).equals(phoneNumber.getText().toString())) {
-    				   correctAddress = true;
-				   }
-    			   else {
-    				   correctAddress = false;
-    			   }
-			   }    		   
-    		   if (cursor.getColumnName(idx).equals( "body") && correctAddress) { 
-    			   returnList.add(cursor.getString(idx));
-			   }			   
-    	   }
-    	} 
-    	
-    	return returnList;
     }
     
     public void sendTextMessage(String text, String address) {
