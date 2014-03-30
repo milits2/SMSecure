@@ -7,7 +7,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -29,13 +28,15 @@ import android.widget.TextView;
 public class Hub extends Activity {	
 	// Dynamic elements
 	List<TextView> messageLog;
-	static String[] numbers = {"7164005384", "7168675309", "8029993641"};
+	Contacts contacts;
 	
 	Conversation activeConversation;
 		
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        contacts = new Contacts(this.getApplicationContext());
         openHub();
     }
 
@@ -59,15 +60,15 @@ public class Hub extends Activity {
     	LinearLayout linkLayout = (LinearLayout)findViewById(R.id.linkLayout);
     	// Remove any links it currently has.
     	linkLayout.removeAllViewsInLayout();
+    	
     	// Load the list of conversations we have.
-    	int i = 0;
+    	String[] numbers = {"7771231234", "4138675309"}; //contacts.getNumbersArray();    	
     	for(String number: numbers) {
     		Button conversationLink = new Button(this);
     		conversationLink.setTag(number);
     		conversationLink.setText("Conversation with " + number);
     		conversationLink.setOnClickListener(clickConversation);
     		linkLayout.addView(conversationLink);
-    		++i;
     	}
     }
     
@@ -82,11 +83,12 @@ public class Hub extends Activity {
 		builder.setPositiveButton("Add", new DialogInterface.OnClickListener() { 
 		    @Override
 		    public void onClick(DialogInterface dialog, int which) {
-		    	String input = numberInput.getText().toString();
-		    	if(input.length() == 10) {
-		    		addConversation(numberInput.getText().toString());
+		    	String inputNumber = numberInput.getText().toString();
+
+		    	// Refresh the screen if addNumber succeeds
+		    	if(contacts.addNumber(inputNumber)) {
+		    		loadConversationLinks();
 		    	}
-		    	//numbers.add(input.getText().toString());
 		    }
 		});
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -98,19 +100,7 @@ public class Hub extends Activity {
 		builder.show();
     }
     
-    public void addConversation(String number) {
-    	// TODO add memory interaction
-    	String[] newNumbers = new String[numbers.length + 1];
-    	for(int i = 0; i < numbers.length; ++i) {
-    		newNumbers[i+1] = numbers[i];
-    	}
-    	newNumbers[0] = number;
-    	numbers = newNumbers;
-    	
-    	loadConversationLinks();
-    }
-    
-    public void editConversationsButton(View view) {
+    public void editConversationsButtonClick(View view) {
     	// TODO implement
     }
     
@@ -165,7 +155,23 @@ public class Hub extends Activity {
     
     public void sendTextMessageButtonClick(View view) {
     	TextView text = (TextView)findViewById(R.id.messageText);
-    	sendTextMessage(text.getText().toString(), activeConversation.getContactNumber());	
+    	String message = text.getText().toString();
+    	
+    	if(!activeConversation.handler.canSendMessage(message)) {
+    		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		    	builder.setMessage("Insufficient remaining one-time pad. Create and share a new one-time pad.")
+		        .setCancelable(false)
+		        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+		            public void onClick(DialogInterface dialog, int id) {
+		                 dialog.cancel();
+		            }
+		        });
+	    	builder.show();
+    	}
+    	else if(message.length() > 0) {
+    		sendTextMessage(message, activeConversation.getContactNumber());
+    		text.setText("");
+    	}
     }
     
     public void sendTextMessage(String text, String address) {

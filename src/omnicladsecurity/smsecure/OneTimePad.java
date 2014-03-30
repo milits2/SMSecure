@@ -8,6 +8,7 @@ public class OneTimePad {
 	
 	public OneTimePad(int padLength) {
 		// Generate padLength characters.
+		// TODO initi w/ offset
 		pad = new char[padLength];
 		Random pGen = new Random(413);        
         for(int i = 0; i < padLength; ++i) {

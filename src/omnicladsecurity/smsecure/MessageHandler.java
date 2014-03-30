@@ -19,11 +19,16 @@ public class MessageHandler {
 	}
 	
 	void setContactPad(OneTimePad newPad) {
+		// Loads a pad from an SD card.
 		// TODO
 	}
 	
 	OneTimePad getContactPad() {
 		return contactPad;
+	}
+	
+	public boolean canSendMessage(String message) {
+		return (localPad.offset + message.length()) < localPad.pad.length;
 	}
 	
 	public String encryptText(String message) {
