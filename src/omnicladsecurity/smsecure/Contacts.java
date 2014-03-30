@@ -71,7 +71,7 @@ public class Contacts {
 		}
 		
 		if(size > 0) {
-			numbers = Arrays.asList(lNumbers);
+			numbers = new ArrayList<String>(Arrays.asList(lNumbers));
 		}
 	}
 }

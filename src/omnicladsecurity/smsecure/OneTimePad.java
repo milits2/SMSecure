@@ -8,14 +8,18 @@ public class OneTimePad {
 	
 	public OneTimePad(int padLength) {
 		// Generate padLength characters.
-		// TODO initi w/ offset
-		pad = new char[padLength];
+		this.pad = new char[padLength];
 		Random pGen = new Random(413);        
         for(int i = 0; i < padLength; ++i) {
-            pad[i] = (char)pGen.nextInt(150);
+            this.pad[i] = (char)pGen.nextInt(Character.MAX_VALUE);
         }
 		
-		offset = 0;
+		this.offset = 0;
+	}
+	
+	public OneTimePad(String padContents, int offset) {
+		this.pad = padContents.toCharArray();
+		this.offset = offset;
 	}
 	
 	public String encrypt(String plaintext) {

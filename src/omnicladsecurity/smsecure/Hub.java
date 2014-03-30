@@ -100,10 +100,6 @@ public class Hub extends Activity {
 		builder.show();
     }
     
-    public void editConversationsButtonClick(View view) {
-    	// TODO implement
-    }
-    
     OnClickListener clickConversation = new OnClickListener() {
     	@Override
     	public void onClick(View view) {
@@ -179,13 +175,39 @@ public class Hub extends Activity {
     	String messageText = activeConversation.prepareTextMessage(text);
     	smsManager.sendTextMessage(address, null, messageText, null, null);
     }
+
+    public void generateOneTimePadButtonClick(View view) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    builder.setTitle("Generate new local pad of the entered size?");
+		// Set up the input
+		final EditText numberInput = new EditText(this);
+		numberInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+		builder.setView(numberInput);
+		// Set up the buttons
+		builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() { 
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		    	int inputNumber = Integer.parseInt(numberInput.getText().toString());
+		    	inputNumber = Math.min(8192, Math.max(1024, inputNumber));
+		    	
+		    	activeConversation.handler.setLocalPad(new OneTimePad(inputNumber));
+		    }
+		});
+		builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		        dialog.cancel();
+		    }
+		});
+		builder.show();
+    }
     
     /********\
     |* SD card storage
     |* TODO make it not use a dummy pad
     \********/
 
-    public void generateOneTimePadButtonClick(View view) {
+    public void shareOneTimePadButtonClick(View view) {
     	createExternalStoragePad();
     }
         

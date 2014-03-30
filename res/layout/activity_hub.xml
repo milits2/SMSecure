@@ -24,15 +24,6 @@
             android:onClick="addConversationButton"
             android:text="@string/addConversation" />
 
-        <Button
-            android:id="@+id/editConversation"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:onClick="editConversationsButton"
-            android:text="@string/editConversations" />
-
     </LinearLayout>
 
     <ScrollView
