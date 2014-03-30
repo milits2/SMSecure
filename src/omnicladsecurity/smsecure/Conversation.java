@@ -28,14 +28,12 @@ public class Conversation {
 	
 	public List<String> loadTextMessages() {
     	Cursor cursor = context.getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
-    	if(cursor == null) {
+    	if(cursor.isAfterLast()) {
     		return new ArrayList<String>();
     	}
     	
     	cursor.moveToFirst();
-
-    	Boolean correctAddress = false;
-    	
+    	Boolean correctAddress = false;    	
     	List<String> returnList = new ArrayList<String>();
     	
     	do {
