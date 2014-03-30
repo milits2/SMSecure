@@ -62,7 +62,7 @@ public class Hub extends Activity {
     	linkLayout.removeAllViewsInLayout();
     	
     	// Load the list of conversations we have.
-    	String[] numbers = {"7771231234", "4138675309"}; //contacts.getNumbersArray();    	
+    	String[] numbers = contacts.getNumbersArray();    	
     	for(String number: numbers) {
     		Button conversationLink = new Button(this);
     		conversationLink.setTag(number);
