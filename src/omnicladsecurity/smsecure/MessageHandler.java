@@ -1,13 +1,18 @@
 package omnicladsecurity.smsecure;
 
+import android.content.Context;
+
 public class MessageHandler {
 	OneTimePad localPad, contactPad;
+	Context context;
 	
-	public MessageHandler(String conversationNumber) {
+	public MessageHandler(Context context, String conversationNumber) {
 		// Load the pads for the associated conversation.
 		// TODO actually load the pads
 		localPad = new OneTimePad(8000);
 		contactPad = new OneTimePad(8000);
+		
+		this.context = context;
 	}
 	
 	void setLocalPad(OneTimePad newPad) {

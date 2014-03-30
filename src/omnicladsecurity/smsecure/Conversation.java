@@ -19,7 +19,7 @@ public class Conversation {
 		this.contactNumber = withNumber;
 		this.context = context;
 		
-		this.handler = new MessageHandler(withNumber);
+		this.handler = new MessageHandler(context, withNumber);
 	}
 	
 	public String getContactNumber() {
