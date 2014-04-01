@@ -9,12 +9,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
-//import android.telephony.TelephonyManager;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.text.InputType;
 import android.util.Log;
+import android.widget.EditText;
+//import android.telephony.TelephonyManager;
 
 public class MessageHandler {
 	OneTimePad localPad, contactPad;
@@ -46,9 +50,9 @@ public class MessageHandler {
 	
 	
 	void storeContactPad() {
-		//String localNumber = ((TelephonyManager) MessageHandler.this.getActivity().getSystemService(Context.TELEPHONY_SERVICE))
-        //.getLine1Number();
-		String localNumber = "5182850865";
+		SharedPreferences prefs = context.getSharedPreferences("localPhoneNumber", Context.MODE_PRIVATE);
+		String localNumber = prefs.getString("localNumber", null);
+		
     	//This only works if phone has internal storage and an SD card mounted
     	File path = new File("/storage/sdcard1");
     	File file = new File(path, localNumber + "-" + contactNumber + ".txt");
@@ -82,9 +86,16 @@ public class MessageHandler {
 	}
 	
 	OneTimePad loadContactPad(){
-		String localNumber = "5182850865";
+		SharedPreferences prefs = context.getSharedPreferences("localPhoneNumber", Context.MODE_PRIVATE);
+		String localNumber = prefs.getString("localNumber", null);
+		
 	    File path = new File("/storage/sdcard1");
 	    File file = new File(path, contactNumber + "-" + localNumber + ".txt");
+	    
+		if(!file.exists()) {
+			// TODO make this not silently fail
+	    	return null;
+		}
 	    
 	    String padContents = "";
 		try {
@@ -99,7 +110,7 @@ public class MessageHandler {
 			reader.close();
 			padContents = builder.toString();
 		} catch(IOException e) {
-			Log.w("InternalStorage", "Error reading from " + contactNumber + "-" + localNumber, e);
+			Log.w("ExternalStorage", "Error reading from " + contactNumber + "-" + localNumber, e);
 		}
 
 		boolean deleted = file.delete();

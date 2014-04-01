@@ -67,7 +67,7 @@ public class Hub extends Activity {
     		
     		Button conversationLink = new Button(this);
     		conversationLink.setTag(number);
-    		conversationLink.setText("Conversation with " + number);
+    		conversationLink.setText("Text with " + number);
     		conversationLink.setOnClickListener(clickConversation);
     		row.addView(conversationLink);
     		
@@ -138,36 +138,6 @@ public class Hub extends Activity {
     
     public void setLocalNumberButtonClick(View view) {
     	setLocalNumber();
-    }
-    
-    public void setLocalNumber() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	    builder.setTitle("Set Local Number");
-		// Set up the input
-		final EditText numberInput = new EditText(this);
-		numberInput.setInputType(InputType.TYPE_CLASS_NUMBER);
-		builder.setView(numberInput);
-		// Set up the buttons
-		builder.setPositiveButton("Set", new DialogInterface.OnClickListener() { 
-		    @Override
-		    public void onClick(DialogInterface dialog, int which) {
-		    	String inputNumber = numberInput.getText().toString();
-				
-		    	if(inputNumber.length() == 10) {
-					SharedPreferences prefs = getApplicationContext().getSharedPreferences("contactsBook", Context.MODE_PRIVATE);
-					SharedPreferences.Editor writer = prefs.edit();
-					writer.putString("localNumber", inputNumber);
-					writer.commit();
-		    	}
-		    }
-		});
-		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-		    @Override
-		    public void onClick(DialogInterface dialog, int which) {
-		        dialog.cancel();
-		    }
-		});
-		builder.show();
     }
     
     /********\
@@ -255,12 +225,43 @@ public class Hub extends Activity {
 		builder.show();
     }
     
+    public void setLocalNumber() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    builder.setTitle("Set Local Number");
+		// Set up the input
+		final EditText numberInput = new EditText(this);
+		numberInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+		builder.setView(numberInput);
+		// Set up the buttons
+		builder.setPositiveButton("Set", new DialogInterface.OnClickListener() { 
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		    	String inputNumber = numberInput.getText().toString();
+				
+		    	if(inputNumber.length() == 10) {
+					SharedPreferences prefs = getApplicationContext().getSharedPreferences("localPhoneNumber", Context.MODE_PRIVATE);
+					SharedPreferences.Editor writer = prefs.edit();
+					writer.putString("localNumber", inputNumber);
+					writer.commit();
+		    	}
+		    }
+		});
+		builder.show();
+    }
+    
     /********\
     |* SD card storage
     |* TODO make it not use a dummy pad
     \********/
 	
     public void shareOneTimePadButtonClick(View view) {
+		SharedPreferences prefs = this.getApplicationContext().getSharedPreferences("localPhoneNumber", Context.MODE_PRIVATE);
+		String localNumber = prefs.getString("localNumber", null);
+		
+		if(localNumber == null) {
+			setLocalNumber();
+		}
+		
     	Conversation.shareButtonClick();
     }
     
@@ -272,6 +273,13 @@ public class Hub extends Activity {
 	};
 
     public void loadOneTimePadButtonClick(View view) {
+		SharedPreferences prefs = this.getApplicationContext().getSharedPreferences("localPhoneNumber", Context.MODE_PRIVATE);
+		String localNumber = prefs.getString("localNumber", null);
+		
+		if(localNumber == null) {
+			setLocalNumber();
+		}
+		
     	Conversation.loadButtonClick();
     }
     
