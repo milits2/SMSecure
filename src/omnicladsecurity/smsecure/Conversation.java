@@ -8,8 +8,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
+
 public class Conversation {
-	// The Conversation class contains the pertinent information for a conversation.
+	static // The Conversation class contains the pertinent information for a conversation.
 	// They are loaded upon opening a conversation and populate themselves.
 	MessageHandler handler;
 	String contactNumber;
@@ -61,4 +62,19 @@ public class Conversation {
 	public String prepareTextMessage(String text) {
 		return handler.encryptText(text);
 	}
+
+	public static void shareButtonClick() {
+		handler.setContactPad();
+	}
+	
+	public static void loadButtonClick(){
+		handler.getLocalPad();
+	}
 }
+	
+
+
+
+
+
+    

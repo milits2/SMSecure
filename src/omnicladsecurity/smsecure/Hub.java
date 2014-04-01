@@ -1,9 +1,6 @@
 package omnicladsecurity.smsecure;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,12 +8,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -206,54 +200,31 @@ public class Hub extends Activity {
     |* SD card storage
     |* TODO make it not use a dummy pad
     \********/
-
+	
     public void shareOneTimePadButtonClick(View view) {
-    	createExternalStoragePad();
+    	Conversation.shareButtonClick();
     }
-        
-    OnClickListener clickSDStorage = new OnClickListener() {
-    	@Override
-    	public void onClick(View view) {
-    		createExternalStoragePad();
+    
+    OnClickListener shareOneTimePadButtonClick = new OnClickListener() {
+		@Override
+		public void onClick(View view) {
+			Conversation.shareButtonClick();
 		}
-    };
-    
-    void createExternalStoragePad() {
-    	//Create a path where we will place the one time pad
-    	//this is in public directory because removal of external storage deletes private app data
-    	OneTimePad pad;
-    	//File path = Environment.getExternalStorageDirectory();
-    	File path = new File("/storage/sdcard1");
-    	File file = new File(path, "Pad.txt");
-    	
-    	pad = new OneTimePad(1024);
-    	
-    	try {
-            // Make sure the directory exists
-            path.mkdirs();
+	};
 
-            OutputStream os = new FileOutputStream(file);
-            os.write(new String(pad.pad).getBytes());
-            os.close();
-
-            // Tell the media scanner about the new file so that it is
-            // immediately available to the user.
-            MediaScannerConnection.scanFile(this,
-                    new String[] { file.toString() }, null,
-                    new MediaScannerConnection.OnScanCompletedListener() {
-                public void onScanCompleted(String path, Uri uri) {
-                    Log.i("ExternalStorage", "Scanned " + path + ":");
-                    Log.i("ExternalStorage", "-> uri=" + uri);
-                }
-            });
-        } catch (IOException e) {
-            // Unable to create file, likely because external storage is
-            // not currently mounted.
-            Log.w("ExternalStorage", "Error writing " + file, e);
-        }
+    public void loadOneTimePadButtonClick(View view) {
+    	Conversation.loadButtonClick();
     }
     
+    OnClickListener loadOneTimePadButtonClick = new OnClickListener() {
+		@Override
+		public void onClick(View view) {
+			Conversation.loadButtonClick();
+		}
+	};
+
     File getExternalStoragePad() {
+    	
     	File path = new File("/storage/sdcard1");
     	File file = new File(path, "Pad.txt");
     	
