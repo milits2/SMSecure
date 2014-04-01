@@ -189,6 +189,15 @@ public class MessageHandler {
 		// Encrypted messages will be of the form |~|offset|message
 		String prefix = "|~|" + localPad.getOffset() + "|";
 		String suffix = localPad.encrypt(message);
+		
+		// Update the new offset		
+		SharedPreferences prefs = context.getSharedPreferences("padOffsets", Context.MODE_PRIVATE);
+		SharedPreferences.Editor writer = prefs.edit();
+		
+		String key = "localOffset" + contactNumber;
+		writer.putInt(key, localPad.getOffset());
+		writer.commit();
+		
 		return prefix + suffix;
 	}
 	
