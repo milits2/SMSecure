@@ -9,8 +9,8 @@ import android.database.Cursor;
 import android.net.Uri;
 
 
-public class Conversation {
-	static // The Conversation class contains the pertinent information for a conversation.
+public class Conversation { static 
+	// The Conversation class contains the pertinent information for a conversation.
 	// They are loaded upon opening a conversation and populate themselves.
 	MessageHandler handler;
 	String contactNumber;
