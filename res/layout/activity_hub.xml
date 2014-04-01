@@ -21,8 +21,17 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:onClick="addConversationButton"
+            android:onClick="addConversationButtonClick"
             android:text="@string/addConversation" />
+
+        <Button
+            android:id="@+id/setLocalNumber"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onClick="setLocalNumberButtonClick"
+            android:text="@string/setLocalNumber" />
 
     </LinearLayout>
 
@@ -32,12 +41,12 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true" >
         
-	    <LinearLayout
+	    <TableLayout
 	        android:id="@+id/linkLayout"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical" >
-	    </LinearLayout>
+	    </TableLayout>
 
     </ScrollView>
     

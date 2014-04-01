@@ -6,7 +6,9 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.telephony.SmsManager;
@@ -17,6 +19,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 public class Hub extends Activity {	
@@ -29,7 +33,7 @@ public class Hub extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+				
         contacts = new Contacts(this.getApplicationContext());
         openHub();
     }
@@ -51,22 +55,60 @@ public class Hub extends Activity {
     }
     
     public void loadConversationLinks() {
-    	LinearLayout linkLayout = (LinearLayout)findViewById(R.id.linkLayout);
+    	TableLayout linkLayout = (TableLayout)findViewById(R.id.linkLayout);
     	// Remove any links it currently has.
     	linkLayout.removeAllViewsInLayout();
     	
     	// Load the list of conversations we have.
     	String[] numbers = contacts.getNumbersArray();    	
     	for(String number: numbers) {
+    		TableRow row = new TableRow(this);
+    		row.setTag(number);
+    		
     		Button conversationLink = new Button(this);
     		conversationLink.setTag(number);
     		conversationLink.setText("Conversation with " + number);
     		conversationLink.setOnClickListener(clickConversation);
-    		linkLayout.addView(conversationLink);
+    		row.addView(conversationLink);
+    		
+    		Button removeLink = new Button(this);
+    		removeLink.setTag(number);
+    		removeLink.setText("-");
+    		removeLink.setOnClickListener(removeConversation);
+    		row.addView(removeLink);
+    		
+    		linkLayout.setColumnStretchable(0, true);
+    		
+    		linkLayout.addView(row);
     	}
     }
     
-    public void addConversationButton(View view) {
+    OnClickListener clickConversation = new OnClickListener() {
+    	@Override
+    	public void onClick(View view) {
+    		openConversation(view.getTag().toString());
+		}
+    };
+    
+    public void openConversation(String phoneNumber) {
+    	setContentView(R.layout.activity_conversation);
+    	activeConversation = new Conversation(this.getApplicationContext(), phoneNumber);
+    	
+    	TextView number = (TextView)findViewById(R.id.phoneNumber);
+    	number.setText(phoneNumber);
+
+    	loadMessageLog();
+    }
+    
+    OnClickListener removeConversation = new OnClickListener() {
+    	@Override
+    	public void onClick(View view) {
+			contacts.removeNumber(view.getTag().toString());
+			loadConversationLinks();
+    	}
+    };
+    
+    public void addConversationButtonClick(View view) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    builder.setTitle("Add Conversation");
 		// Set up the input
@@ -94,21 +136,38 @@ public class Hub extends Activity {
 		builder.show();
     }
     
-    OnClickListener clickConversation = new OnClickListener() {
-    	@Override
-    	public void onClick(View view) {
-    		openConversation(view.getTag().toString());
-		}
-    };
+    public void setLocalNumberButtonClick(View view) {
+    	setLocalNumber();
+    }
     
-    public void openConversation(String phoneNumber) {
-    	setContentView(R.layout.activity_conversation);
-    	activeConversation = new Conversation(this.getApplicationContext(), phoneNumber);
-    	
-    	TextView number = (TextView)findViewById(R.id.phoneNumber);
-    	number.setText(phoneNumber);
-
-    	loadMessageLog();
+    public void setLocalNumber() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    builder.setTitle("Set Local Number");
+		// Set up the input
+		final EditText numberInput = new EditText(this);
+		numberInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+		builder.setView(numberInput);
+		// Set up the buttons
+		builder.setPositiveButton("Set", new DialogInterface.OnClickListener() { 
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		    	String inputNumber = numberInput.getText().toString();
+				
+		    	if(inputNumber.length() == 10) {
+					SharedPreferences prefs = getApplicationContext().getSharedPreferences("contactsBook", Context.MODE_PRIVATE);
+					SharedPreferences.Editor writer = prefs.edit();
+					writer.putString("localNumber", inputNumber);
+					writer.commit();
+		    	}
+		    }
+		});
+		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		        dialog.cancel();
+		    }
+		});
+		builder.show();
     }
     
     /********\

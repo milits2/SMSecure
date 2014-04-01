@@ -52,8 +52,15 @@ public class Contacts {
 		SharedPreferences prefs = context.getSharedPreferences("contactsBook", Context.MODE_PRIVATE);
 		SharedPreferences.Editor writer = prefs.edit();
 		
-		writer.putInt("contactsListSize", lNumbers.length);
+		// Remove old numbers
+		int oldSize = prefs.getInt("contactsListSize", 0);
+		for(int i = 0; i < oldSize; ++i) {
+			writer.remove("contacts_" + i);
+		}
+		writer.commit();
 		
+		// Store new numbers
+		writer.putInt("contactsListSize", lNumbers.length);		
 		for(int i = 0; i < lNumbers.length; ++i) {
 			writer.putString("contacts_" + i, lNumbers[i]);
 		}
