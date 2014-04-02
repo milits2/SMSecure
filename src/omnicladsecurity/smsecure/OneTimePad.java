@@ -9,7 +9,7 @@ public class OneTimePad {
 	public OneTimePad(int padLength) {
 		// Generate padLength characters.
 		this.pad = new char[padLength];
-		Random pGen = new Random(413);        
+		Random pGen = new Random();        
         for(int i = 0; i < padLength; ++i) {
             this.pad[i] = (char)pGen.nextInt(Character.MAX_VALUE);
         }

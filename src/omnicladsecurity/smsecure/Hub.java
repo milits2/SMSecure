@@ -1,6 +1,7 @@
 package omnicladsecurity.smsecure;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,9 +20,11 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
 
 public class Hub extends Activity {	
 	// Dynamic elements
@@ -30,6 +33,8 @@ public class Hub extends Activity {
 	
 	Conversation activeConversation;
 		
+	
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,27 +150,74 @@ public class Hub extends Activity {
     \********/
     
     public void loadMessageLog() {
-    	List<String> messages = activeConversation.loadTextMessages();
+    	List<SMSMessage> messages = activeConversation.loadTextMessages();
     	LinearLayout messageLayout = (LinearLayout)findViewById(R.id.messageLayout);
     	messageLog = new ArrayList<TextView>();
 
     	boolean colorOn = true;;
-    	for(String message: messages) {
-    		TextView temp = new TextView(this);
-    		temp.setText(message);
-    		temp.setTextSize(36);
-    		temp.setPadding(6, 12, 0, 6);
+    	
+    	String previousDate = "text";
+    	
+    	for(SMSMessage message: messages) {
     		
+    		String messageDate = new SimpleDateFormat("MM/dd/yyyy").format(message.date);
+    		String messageTime = new SimpleDateFormat("hh:mm:ss.SSS").format(message.date);
+    		
+    		if (!previousDate.equals(messageDate))
+    		{
+    			previousDate = messageDate;
+    			
+    			TextView padding = new TextView(this);
+    			padding.setText(previousDate);
+        		padding.setPadding(10, 10, 10, 10);
+        		padding.setTextSize(36);
+        		padding.setBackgroundColor(Color.parseColor("#AFAFFF"));
+        		
+        		messageLayout.addView(padding);
+    		}
+    		
+    		
+    		TextView messageTimeView = new TextView(this);
+			messageTimeView.setText(messageTime);
+			messageTimeView.setPadding(10, 0, 0, 10);
+			messageTimeView.setTextSize(16);
+			messageTimeView.setBackgroundColor(Color.parseColor("#F6F6FF"));
+    				
+    		
+    		TextView temp = new TextView(this);
+    		temp.setText(message.message);
+    		temp.setTextSize(24);
+    		temp.setPadding(10, 10, 10, 0);
+
     		if(colorOn) {
     			temp.setBackgroundColor(Color.parseColor("#EFEFFF"));
+    			messageTimeView.setBackgroundColor(Color.parseColor("#EFEFFF"));
+    			
     		}
     		else {
     			temp.setBackgroundColor(Color.parseColor("#DFDFFF"));
+    			messageTimeView.setBackgroundColor(Color.parseColor("#DFDFFF"));
     		}
     		colorOn = !colorOn;
-    		
+    		 		
     		messageLayout.addView(temp);
+    		messageLayout.addView(messageTimeView);
+    		
+			
+			
+    		
+    		
     	}
+    	
+    	//ScrollView messagePane = (ScrollView)findViewById(R.id.messagePane);
+    	//messagePane.fullScroll(ScrollView.FOCUS_DOWN);
+    	
+    	findViewById(R.id.messagePane).post(new Runnable() {            
+    	    @Override
+    	    public void run() {
+    	    	((ScrollView) findViewById(R.id.messagePane)).fullScroll(View.FOCUS_DOWN);              
+    	    }
+    	});
     }
     
     public void backToHubButtonClick(View view) {

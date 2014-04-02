@@ -13,7 +13,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 //import android.telephony.TelephonyManager;
 
 public class MessageHandler {
@@ -36,10 +38,6 @@ public class MessageHandler {
 		}
 	}
 	
-	OneTimePad getLocalPad() {
-		return loadContactPad();
-	}
-	
 	void setContactPad() {
 		storeContactPad();
 	}
@@ -50,7 +48,8 @@ public class MessageHandler {
 		String localNumber = prefs.getString("localNumber", null);
 		
     	//This only works if phone has internal storage and an SD card mounted
-    	File path = new File("/storage/sdcard1");
+		File path = Environment.getExternalStorageDirectory();
+    	//File path = new File("/storage/sdcard1");
     	File file = new File(path, localNumber + "-" + contactNumber + ".txt");
     	
     	OneTimePad pad;
@@ -58,6 +57,8 @@ public class MessageHandler {
     	
     	try {
             path.mkdirs();
+            Toast.makeText(context, path.getPath() + " successsfully created", Toast.LENGTH_LONG).show();
+            
 
             OutputStream os = new FileOutputStream(file);
             os.write(new String(pad.pad).getBytes());
@@ -78,19 +79,21 @@ public class MessageHandler {
             // Unable to create file, likely because external storage is
             // not currently mounted.
             Log.w("ExternalStorage", "Error writing " + file, e);
+            Toast.makeText(context, e.getMessage() , Toast.LENGTH_LONG).show();
         }
 	}
 	
-	OneTimePad loadContactPad(){
+	void loadContactPad(){
 		SharedPreferences prefs = context.getSharedPreferences("localPhoneNumber", Context.MODE_PRIVATE);
 		String localNumber = prefs.getString("localNumber", null);
 		
-	    File path = new File("/storage/sdcard1");
+		File path = Environment.getExternalStorageDirectory();
+	    //File path = new File("/storage/sdcard1");
 	    File file = new File(path, contactNumber + "-" + localNumber + ".txt");
 	    
 		if(!file.exists()) {
 			// TODO make this not silently fail
-	    	return null;
+	    	
 		}
 	    
 	    String padContents = "";
@@ -112,9 +115,11 @@ public class MessageHandler {
 		boolean deleted = file.delete();
 		if(!deleted)
 		{
-			return new OneTimePad(null, 0);
+			
 		}
-		return new OneTimePad(padContents, 0);
+		
+		contactPad = new OneTimePad(padContents, 0);
+		storePadByName(contactPad, "contact");
 	}
 	
 	void storePadByName(OneTimePad pad, String name) {

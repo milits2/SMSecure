@@ -1,5 +1,7 @@
 package omnicladsecurity.smsecure;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,36 +29,62 @@ public class Conversation { static
 		return contactNumber;
 	}
 	
-	public List<String> loadTextMessages() {
+	public List<SMSMessage> loadTextMessages() {
     	Cursor cursor = context.getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
     	if(cursor.isAfterLast()) {
-    		return new ArrayList<String>();
+    		return new ArrayList<SMSMessage>();
     	}
     	
     	cursor.moveToFirst();
-    	Boolean correctAddress = false;    	
-    	List<String> returnList = new ArrayList<String>();
+    	Boolean correctAddress = false;    	    			
+    	List<SMSMessage> messageList = new ArrayList<SMSMessage>();
     	
     	do {
-    	   for(int idx = 0; idx < cursor.getColumnCount(); idx++) {
+    	   for(int idx = 0; idx < cursor.getColumnCount(); idx++) {    		   
+    		   
     		   if (cursor.getColumnName(idx).equals("address") ) {
+    			   
     			   if (cursor.getString(idx).equals(contactNumber)) {
     				   correctAddress = true;
+    				   idx++;
 				   }
     			   else {
     				   correctAddress = false;
     			   }
-			   }    		   
-    		   if (cursor.getColumnName(idx).equals( "body") && correctAddress) {
-    			   String ciphertext = cursor.getString(idx);
-    			   String plaintext = handler.decryptText(ciphertext);
-    			   returnList.add(plaintext);
-			   }			   
+			   }    
+    		   
+    		   
+    		   if (correctAddress)
+    		   {
+    			   SMSMessage message = new SMSMessage();
+    			   
+    			   for(idx = idx + 1; idx < cursor.getColumnCount(); idx++)
+    			   {
+    				   
+		    		   if (cursor.getColumnName(idx).equals( "body")) {
+		    			   String ciphertext = cursor.getString(idx);
+		    			   String plaintext = handler.decryptText(ciphertext);
+		    			   message.message = plaintext;
+					   }
+		    		   
+		    		   if (cursor.getColumnName(idx).equals( "date")) {    			  
+		    			   message.date = new Date(cursor.getLong(idx));		    			  
+					   }	  		    		   
+		    		   
+    			   } 
+    			   
+    			   if (message.message != null) {
+    				   messageList.add(message);   			   
+    			   }
+    			   
+    			   correctAddress = false;
+    		   }
+    		   
     	   }
     	} while(cursor.moveToNext());
     	
-    	Collections.reverse(returnList);
-    	return returnList;
+    	Collections.reverse(messageList);
+    	return messageList;
 	}
 	
 	public String prepareTextMessage(String text) {
@@ -68,7 +96,7 @@ public class Conversation { static
 	}
 	
 	public static void loadButtonClick(){
-		handler.getLocalPad();
+		handler.loadContactPad();
 	}
 }
 	

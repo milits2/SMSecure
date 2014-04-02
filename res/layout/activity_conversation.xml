@@ -79,7 +79,8 @@
         android:layout_below="@+id/phoneNumberHeader"
         android:layout_above="@+id/inputBar"
         android:layout_centerHorizontal="true"
-        android:scrollbars="vertical" >
+        android:scrollbars="vertical" 
+        android:stackFromBottom="true">
 
         <LinearLayout
             android:id="@+id/messageLayout"
