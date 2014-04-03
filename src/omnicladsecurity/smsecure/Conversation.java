@@ -29,42 +29,41 @@ public class Conversation {
 	
 	public List<SMSMessage> loadTextMessages() {
 		// Load the text messages in from the phone for display.
-    	Cursor cursor = context.getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
-    	if(cursor.isAfterLast()) {
-    		return new ArrayList<SMSMessage>();
-    	}
-    	
-    	cursor.moveToFirst();  	    			
-    	List<SMSMessage> messageList = new ArrayList<SMSMessage>();
-    	
-    	do {
-    	   for(int idx = 0; idx < cursor.getColumnCount(); idx++) {    		      		   
-    		   if (cursor.getColumnName(idx).equals("address") &&
-    				   cursor.getString(idx).equals(contactNumber)) { 				   
-				   SMSMessage message = new SMSMessage();
+		Cursor cursor = context.getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
+		if(cursor.isAfterLast()) {
+			return new ArrayList<SMSMessage>();
+		}
+		
+		cursor.moveToFirst();
+		List<SMSMessage> messageList = new ArrayList<SMSMessage>();
+		
+		do {
+			for(int idx = 0; idx < cursor.getColumnCount(); idx++) {
+				if (cursor.getColumnName(idx).equals("address") &&
+					cursor.getString(idx).equals(contactNumber)) {
+					SMSMessage message = new SMSMessage();
 			   
-    			   for(idx = idx + 1; idx < cursor.getColumnCount(); idx++) {  				   
-		    		   if (cursor.getColumnName(idx).equals("body")) {
-		    			   String ciphertext = cursor.getString(idx);
-		    			   String plaintext = handler.decryptText(ciphertext);
-		    			   message.message = plaintext;
-					   }
-		    		   
-		    		   if (cursor.getColumnName(idx).equals("date")) {    			  
-		    			   message.date = new Date(cursor.getLong(idx));		    			  
-					   }	  		    		   		    		   
-    			   } 
-    			   
-    			   if (message.message != null) {
-    				   messageList.add(message);   			   
-    			   }
-    			   
-			   }			          		       		      		      		   
-    	   }
-    	} while(cursor.moveToNext());
-    	
-    	Collections.reverse(messageList);
-    	return messageList;
+					for(idx = idx + 1; idx < cursor.getColumnCount(); idx++) {
+						if (cursor.getColumnName(idx).equals("body")) {
+							String ciphertext = cursor.getString(idx);
+							String plaintext = handler.decryptText(ciphertext);
+							message.message = plaintext;
+						}
+					   
+						if (cursor.getColumnName(idx).equals("date")) {
+							message.date = new Date(cursor.getLong(idx));
+						}
+					}
+				   
+					if (message.message != null) {
+						messageList.add(message);
+					}
+				}
+			}
+		} while(cursor.moveToNext());
+		
+		Collections.reverse(messageList);
+		return messageList;
 	}
 	
 	public String prepareTextMessage(String text) {
@@ -82,10 +81,3 @@ public class Conversation {
 		handler.loadContactPad();
 	}
 }
-	
-
-
-
-
-
-    

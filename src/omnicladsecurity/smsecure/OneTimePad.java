@@ -3,15 +3,15 @@ package omnicladsecurity.smsecure;
 import java.util.Random;
 
 public class OneTimePad {
-    public char[] pad;
-    public int offset;
+	public char[] pad;
+	public int offset;
 	
 	public OneTimePad(int padLength) {
 		this.pad = new char[padLength];
-		Random pGen = new Random();        
-        for(int i = 0; i < padLength; ++i) {
-            this.pad[i] = (char)pGen.nextInt(Character.MAX_VALUE);
-        }
+		Random pGen = new Random();		
+		for(int i = 0; i < padLength; ++i) {
+			this.pad[i] = (char)pGen.nextInt(Character.MAX_VALUE);
+		}
 		
 		this.offset = 0;
 	}
@@ -41,7 +41,7 @@ public class OneTimePad {
 		for(char b: ciphertext) {
 			plain[offset - encryptShift] = (char)(b - pad[offset]);
 			++offset;
-		}		
+		}
 		return new String(plain);
 	}
 	

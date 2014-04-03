@@ -44,40 +44,40 @@ public class MessageHandler {
 		SharedPreferences prefs = context.getSharedPreferences("localPhoneNumber", Context.MODE_PRIVATE);
 		String localNumber = prefs.getString("localNumber", null);
 		
-    	//This only works if phone has internal storage and an SD card mounted
+		//This only works if phone has internal storage and an SD card mounted
 		File path = Environment.getExternalStorageDirectory();
-    	//File path = new File("/storage/sdcard1");
-    	File file = new File(path, localNumber + "-" + contactNumber + ".txt");
-    	
-    	OneTimePad pad;
-    	pad = localPad;
-    	
-    	try {
-            path.mkdirs();
-            Toast.makeText(context, path.getPath() + " successsfully created", Toast.LENGTH_LONG).show();
-            
-
-            OutputStream os = new FileOutputStream(file);
-            os.write(new String(pad.pad).getBytes());
-            os.close();
-
-            // Tell the media scanner about the new file so that it is
-            // immediately available to the user.
-            // Not sure if use of context is correct here
-            MediaScannerConnection.scanFile(context,
-                    new String[] { file.toString() }, null,
-                    new MediaScannerConnection.OnScanCompletedListener() {
-                public void onScanCompleted(String path, Uri uri) {
-                    Log.i("ExternalStorage", "Scanned " + path + ":");
-                    Log.i("ExternalStorage", "-> uri=" + uri);
-                }
-            });
-        } catch (IOException e) {
-            // Unable to create file, likely because external storage is
-            // not currently mounted.
-            Log.w("ExternalStorage", "Error writing " + file, e);
-            Toast.makeText(context, e.getMessage() , Toast.LENGTH_LONG).show();
-        }
+		//File path = new File("/storage/sdcard1");
+		File file = new File(path, localNumber + "-" + contactNumber + ".txt");
+		
+		OneTimePad pad;
+		pad = localPad;
+		
+		try {
+			path.mkdirs();
+			Toast.makeText(context, path.getPath() + " successsfully created", Toast.LENGTH_LONG).show();
+			
+			
+			OutputStream os = new FileOutputStream(file);
+			os.write(new String(pad.pad).getBytes());
+			os.close();
+			
+			// Tell the media scanner about the new file so that it is
+			// immediately available to the user.
+			// Not sure if use of context is correct here
+			MediaScannerConnection.scanFile(context,
+					new String[] { file.toString() }, null,
+					new MediaScannerConnection.OnScanCompletedListener() {
+				public void onScanCompleted(String path, Uri uri) {
+					Log.i("ExternalStorage", "Scanned " + path + ":");
+					Log.i("ExternalStorage", "-> uri=" + uri);
+				}
+			});
+		} catch (IOException e) {
+			// Unable to create file, likely because external storage is
+			// not currently mounted.
+			Log.w("ExternalStorage", "Error writing " + file, e);
+			Toast.makeText(context, e.getMessage() , Toast.LENGTH_LONG).show();
+		}
 	}
 	
 	public void loadContactPad() {
@@ -86,13 +86,13 @@ public class MessageHandler {
 		String localNumber = prefs.getString("localNumber", null);
 		
 		File path = Environment.getExternalStorageDirectory();
-	    File file = new File(path, contactNumber + "-" + localNumber + ".txt");
-	    
+		File file = new File(path, contactNumber + "-" + localNumber + ".txt");
+		
 		if(!file.exists()) {
-			// TODO make this not silently fail	    	
+			// TODO make this not silently fail			
 		}
-	    
-	    String padContents = "";
+		
+		String padContents = "";
 		try {
 			FileInputStream streamer = new FileInputStream(file);
 			
@@ -154,7 +154,7 @@ public class MessageHandler {
 		File padFile = new File(routeName, fileName);
 		
 		if(!padFile.exists()) return null;
-
+		
 		String padContents = "";
 		try {
 			FileInputStream streamer = new FileInputStream(padFile);
