@@ -1,16 +1,21 @@
 package omnicladsecurity.smsecure;
 
 import java.io.File;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.text.InputType;
@@ -27,13 +32,9 @@ import android.widget.TextView;
 
 
 public class Hub extends Activity {	
-	// Dynamic elements
-	List<TextView> messageLog;
-	Contacts contacts;
-	
-	Conversation activeConversation;
-		
-	
+	private Contacts contacts;
+	private Conversation activeConversation;
+	private Map<String, Integer> conversationMap;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,41 @@ public class Hub extends Activity {
     
     public void openHub() {
     	setContentView(R.layout.activity_hub);
+    	
+    	conversationMap = new HashMap();
+        loadMessagesNumbers();
+    	
         loadConversationLinks();
+        
+        
+    }
+    
+    public void loadMessagesNumbers()
+    {
+    	Cursor cursor = this.getApplicationContext().getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
+    	if(cursor.isAfterLast()) {
+    		
+    	}
+    	
+    	cursor.moveToFirst();  	    			
+    	List<SMSMessage> messageList = new ArrayList<SMSMessage>();
+    	
+    	do {
+    	   for(int idx = 0; idx < cursor.getColumnCount(); idx++) {    		      		   
+    		   if (cursor.getColumnName(idx).equals("address")) { 				
+    			   
+
+    			   
+    			   if (!conversationMap.containsKey(cursor.getString(idx))){
+    				   conversationMap.put(cursor.getString(idx), 1);
+    			   } else {
+    				   conversationMap.put(cursor.getString(idx),conversationMap.get(cursor.getString(idx)) + 1);
+    			   }
+    			   break;  
+    			   
+			   }			          		       		      		      		   
+    	   }
+    	} while(cursor.moveToNext());
     }
     
     public void loadConversationLinks() {
@@ -152,19 +187,16 @@ public class Hub extends Activity {
     public void loadMessageLog() {
     	List<SMSMessage> messages = activeConversation.loadTextMessages();
     	LinearLayout messageLayout = (LinearLayout)findViewById(R.id.messageLayout);
-    	messageLog = new ArrayList<TextView>();
 
     	boolean colorOn = true;;
     	
-    	String previousDate = "text";
+    	String previousDate = "spaceholdertext";
     	
-    	for(SMSMessage message: messages) {
-    		
+    	for(SMSMessage message: messages) {		
     		String messageDate = new SimpleDateFormat("MM/dd/yyyy").format(message.date);
     		String messageTime = new SimpleDateFormat("hh:mm:ss.SSS").format(message.date);
     		
-    		if (!previousDate.equals(messageDate))
-    		{
+    		if (!previousDate.equals(messageDate)) {
     			previousDate = messageDate;
     			
     			TextView padding = new TextView(this);
@@ -174,15 +206,13 @@ public class Hub extends Activity {
         		padding.setBackgroundColor(Color.parseColor("#AFAFFF"));
         		
         		messageLayout.addView(padding);
-    		}
-    		
+    		}		
     		
     		TextView messageTimeView = new TextView(this);
 			messageTimeView.setText(messageTime);
 			messageTimeView.setPadding(10, 0, 0, 10);
 			messageTimeView.setTextSize(16);
-			messageTimeView.setBackgroundColor(Color.parseColor("#F6F6FF"));
-    				
+			messageTimeView.setBackgroundColor(Color.parseColor("#F6F6FF")); 				
     		
     		TextView temp = new TextView(this);
     		temp.setText(message.message);
@@ -201,16 +231,8 @@ public class Hub extends Activity {
     		colorOn = !colorOn;
     		 		
     		messageLayout.addView(temp);
-    		messageLayout.addView(messageTimeView);
-    		
-			
-			
-    		
-    		
+    		messageLayout.addView(messageTimeView); 			
     	}
-    	
-    	//ScrollView messagePane = (ScrollView)findViewById(R.id.messagePane);
-    	//messagePane.fullScroll(ScrollView.FOCUS_DOWN);
     	
     	findViewById(R.id.messagePane).post(new Runnable() {            
     	    @Override
@@ -314,15 +336,8 @@ public class Hub extends Activity {
 			setLocalNumber();
 		}
 		
-    	Conversation.shareButtonClick();
-    }
-    
-    OnClickListener shareOneTimePadButtonClick = new OnClickListener() {
-		@Override
-		public void onClick(View view) {
-			Conversation.shareButtonClick();
-		}
-	};
+    	activeConversation.shareButtonClick();
+    }  
 
     public void loadOneTimePadButtonClick(View view) {
 		SharedPreferences prefs = this.getApplicationContext().getSharedPreferences("localPhoneNumber", Context.MODE_PRIVATE);
@@ -332,21 +347,7 @@ public class Hub extends Activity {
 			setLocalNumber();
 		}
 		
-    	Conversation.loadButtonClick();
-    }
-    
-    OnClickListener loadOneTimePadButtonClick = new OnClickListener() {
-		@Override
-		public void onClick(View view) {
-			Conversation.loadButtonClick();
-		}
-	};
-
-    File getExternalStoragePad() {
-    	
-    	File path = new File("/storage/sdcard1");
-    	File file = new File(path, "Pad.txt");
-    	
-    	return file;
-    }
+		activeConversation.loadButtonClick();
+    }  
+	
 }

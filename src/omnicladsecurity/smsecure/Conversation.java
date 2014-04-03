@@ -11,12 +11,12 @@ import android.database.Cursor;
 import android.net.Uri;
 
 
-public class Conversation { static 
+public class Conversation {
 	// The Conversation class contains the pertinent information for a conversation.
 	// They are loaded upon opening a conversation and populate themselves.
-	MessageHandler handler;
-	String contactNumber;
-	Context context;
+	public MessageHandler handler;
+	public String contactNumber;
+	public Context context;
 	
 	public Conversation(Context context, String withNumber) {
 		this.contactNumber = withNumber;
@@ -35,51 +35,32 @@ public class Conversation { static
     		return new ArrayList<SMSMessage>();
     	}
     	
-    	cursor.moveToFirst();
-    	Boolean correctAddress = false;    	    			
+    	cursor.moveToFirst();  	    			
     	List<SMSMessage> messageList = new ArrayList<SMSMessage>();
     	
     	do {
-    	   for(int idx = 0; idx < cursor.getColumnCount(); idx++) {    		   
-    		   
-    		   if (cursor.getColumnName(idx).equals("address") ) {
-    			   
-    			   if (cursor.getString(idx).equals(contactNumber)) {
-    				   correctAddress = true;
-    				   idx++;
-				   }
-    			   else {
-    				   correctAddress = false;
-    			   }
-			   }    
-    		   
-    		   
-    		   if (correctAddress)
-    		   {
-    			   SMSMessage message = new SMSMessage();
-    			   
-    			   for(idx = idx + 1; idx < cursor.getColumnCount(); idx++)
-    			   {
-    				   
-		    		   if (cursor.getColumnName(idx).equals( "body")) {
+    	   for(int idx = 0; idx < cursor.getColumnCount(); idx++) {    		      		   
+    		   if (cursor.getColumnName(idx).equals("address") &&
+    				   cursor.getString(idx).equals(contactNumber)) { 				   
+				   SMSMessage message = new SMSMessage();
+			   
+    			   for(idx = idx + 1; idx < cursor.getColumnCount(); idx++) {  				   
+		    		   if (cursor.getColumnName(idx).equals("body")) {
 		    			   String ciphertext = cursor.getString(idx);
 		    			   String plaintext = handler.decryptText(ciphertext);
 		    			   message.message = plaintext;
 					   }
 		    		   
-		    		   if (cursor.getColumnName(idx).equals( "date")) {    			  
+		    		   if (cursor.getColumnName(idx).equals("date")) {    			  
 		    			   message.date = new Date(cursor.getLong(idx));		    			  
-					   }	  		    		   
-		    		   
+					   }	  		    		   		    		   
     			   } 
     			   
     			   if (message.message != null) {
     				   messageList.add(message);   			   
     			   }
     			   
-    			   correctAddress = false;
-    		   }
-    		   
+			   }			          		       		      		      		   
     	   }
     	} while(cursor.moveToNext());
     	
@@ -91,11 +72,11 @@ public class Conversation { static
 		return handler.encryptText(text);
 	}
 
-	public static void shareButtonClick() {
+	public  void shareButtonClick() {
 		handler.setContactPad();
 	}
 	
-	public static void loadButtonClick(){
+	public void loadButtonClick(){
 		handler.loadContactPad();
 	}
 }

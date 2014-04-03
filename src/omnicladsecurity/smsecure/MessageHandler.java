@@ -19,9 +19,9 @@ import android.widget.Toast;
 //import android.telephony.TelephonyManager;
 
 public class MessageHandler {
-	OneTimePad localPad, contactPad;
-	Context context;
-	String contactNumber;
+	public OneTimePad localPad, contactPad;
+	public Context context;
+	public String contactNumber;
 	
 	public MessageHandler(Context context, String conversationNumber) {
 		this.contactNumber = conversationNumber;
@@ -31,19 +31,19 @@ public class MessageHandler {
 		contactPad = loadPadByName("contact");
 	}
 	
-	void setLocalPad(OneTimePad pad) {
+	public void setLocalPad(OneTimePad pad) {
 		localPad = pad;
 		if(localPad != null) {
 			storePadByName(localPad, "local");
 		}
 	}
 	
-	void setContactPad() {
+	public void setContactPad() {
 		storeContactPad();
 	}
 	
 	
-	void storeContactPad() {
+	public void storeContactPad() {
 		SharedPreferences prefs = context.getSharedPreferences("localPhoneNumber", Context.MODE_PRIVATE);
 		String localNumber = prefs.getString("localNumber", null);
 		
@@ -83,7 +83,7 @@ public class MessageHandler {
         }
 	}
 	
-	void loadContactPad(){
+	public void loadContactPad(){
 		SharedPreferences prefs = context.getSharedPreferences("localPhoneNumber", Context.MODE_PRIVATE);
 		String localNumber = prefs.getString("localNumber", null);
 		
@@ -122,7 +122,7 @@ public class MessageHandler {
 		storePadByName(contactPad, "contact");
 	}
 	
-	void storePadByName(OneTimePad pad, String name) {
+	public void storePadByName(OneTimePad pad, String name) {
 		String routeName = context.getFilesDir() + "/" + contactNumber;
 		File path = new File(routeName);
 		path.mkdir();
@@ -154,7 +154,7 @@ public class MessageHandler {
 		writer.commit();
 	}
 	
-	OneTimePad loadPadByName(String name) {
+	public OneTimePad loadPadByName(String name) {
 		String routeName = context.getFilesDir() + "/" + contactNumber;
 		String fileName = name + "Pad.dat";
 		File padFile = new File(routeName, fileName);

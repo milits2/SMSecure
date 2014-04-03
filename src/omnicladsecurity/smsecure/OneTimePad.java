@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class OneTimePad {
     public char[] pad;
-	int offset;
+    public int offset;
 	
 	public OneTimePad(int padLength) {
 		// Generate padLength characters.
