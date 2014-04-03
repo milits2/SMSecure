@@ -7,7 +7,6 @@ public class OneTimePad {
     public int offset;
 	
 	public OneTimePad(int padLength) {
-		// Generate padLength characters.
 		this.pad = new char[padLength];
 		Random pGen = new Random();        
         for(int i = 0; i < padLength; ++i) {
@@ -23,7 +22,7 @@ public class OneTimePad {
 	}
 	
 	public String encrypt(String plaintext) {
-		// Offset is updated by encrypt.
+		// Encrypt a string with the pad
 		char[] plain = plaintext.toCharArray();
 		char[] cipher = new char[plain.length];
 		int encryptShift = offset;
@@ -35,7 +34,8 @@ public class OneTimePad {
 	}
 	
 	public String decrypt(char[] ciphertext) {
-		// Decrypt must have offset set before it is run.
+		// Decrypt a string the pad
+		// Needs to have offset set before running
 		char[] plain = new char[ciphertext.length];
 		int encryptShift = offset;
 		for(char b: ciphertext) {

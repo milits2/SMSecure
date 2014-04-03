@@ -56,32 +56,28 @@ public class Hub extends Activity {
     \********/
     
     public void openHub() {
+    	// Transition to the Hub UI view
     	setContentView(R.layout.activity_hub);
     	
-    	conversationMap = new HashMap();
+    	conversationMap = new HashMap<String, Integer>();
         loadMessagesNumbers();
     	
         loadConversationLinks();
-        
-        
     }
     
     public void loadMessagesNumbers()
     {
+    	// Counts number of messages and stores in hash table 
     	Cursor cursor = this.getApplicationContext().getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
     	if(cursor.isAfterLast()) {
-    		
+    		return;
     	}
     	
-    	cursor.moveToFirst();  	    			
-    	List<SMSMessage> messageList = new ArrayList<SMSMessage>();
+    	cursor.moveToFirst();
     	
     	do {
     	   for(int idx = 0; idx < cursor.getColumnCount(); idx++) {    		      		   
-    		   if (cursor.getColumnName(idx).equals("address")) { 				
-    			   
-
-    			   
+    		   if (cursor.getColumnName(idx).equals("address")) { 	
     			   if (!conversationMap.containsKey(cursor.getString(idx))){
     				   conversationMap.put(cursor.getString(idx), 1);
     			   } else {
@@ -95,6 +91,7 @@ public class Hub extends Activity {
     }
     
     public void loadConversationLinks() {
+    	// Load and display the links to each conversation
     	TableLayout linkLayout = (TableLayout)findViewById(R.id.linkLayout);
     	// Remove any links it currently has.
     	linkLayout.removeAllViewsInLayout();
@@ -124,13 +121,24 @@ public class Hub extends Activity {
     }
     
     OnClickListener clickConversation = new OnClickListener() {
+    	// A dynamic listener to open conversations
     	@Override
     	public void onClick(View view) {
     		openConversation(view.getTag().toString());
 		}
     };
     
+    OnClickListener removeConversation = new OnClickListener() {
+    	// A dynamic listener to remove conversations
+    	@Override
+    	public void onClick(View view) {
+			contacts.removeNumber(view.getTag().toString());
+			loadConversationLinks();
+    	}
+    };
+    
     public void openConversation(String phoneNumber) {
+    	// Transition to the Conversation UI view
     	setContentView(R.layout.activity_conversation);
     	activeConversation = new Conversation(this.getApplicationContext(), phoneNumber);
     	
@@ -140,21 +148,16 @@ public class Hub extends Activity {
     	loadMessageLog();
     }
     
-    OnClickListener removeConversation = new OnClickListener() {
-    	@Override
-    	public void onClick(View view) {
-			contacts.removeNumber(view.getTag().toString());
-			loadConversationLinks();
-    	}
-    };
-    
     public void addConversationButtonClick(View view) {
+    	// Add a new conversation and contact to the list
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    builder.setTitle("Add Conversation");
+	    
 		// Set up the input
 		final EditText numberInput = new EditText(this);
 		numberInput.setInputType(InputType.TYPE_CLASS_NUMBER);
 		builder.setView(numberInput);
+		
 		// Set up the buttons
 		builder.setPositiveButton("Add", new DialogInterface.OnClickListener() { 
 		    @Override
@@ -185,6 +188,7 @@ public class Hub extends Activity {
     \********/
     
     public void loadMessageLog() {
+    	// Load the text message history for display.
     	List<SMSMessage> messages = activeConversation.loadTextMessages();
     	LinearLayout messageLayout = (LinearLayout)findViewById(R.id.messageLayout);
 
@@ -208,6 +212,7 @@ public class Hub extends Activity {
         		messageLayout.addView(padding);
     		}		
     		
+    		// Create and format the box for a given text message
     		TextView messageTimeView = new TextView(this);
 			messageTimeView.setText(messageTime);
 			messageTimeView.setPadding(10, 0, 0, 10);
@@ -247,6 +252,7 @@ public class Hub extends Activity {
     }
     
     public void sendTextMessageButtonClick(View view) {
+    	// UI handling for sending a text message to conversation partner
     	TextView text = (TextView)findViewById(R.id.messageText);
     	String message = text.getText().toString();
     	
@@ -268,18 +274,22 @@ public class Hub extends Activity {
     }
     
     public void sendTextMessage(String text, String address) {
+    	// Prepare and issue the text message
     	SmsManager smsManager = SmsManager.getDefault();
     	String messageText = activeConversation.prepareTextMessage(text);
     	smsManager.sendTextMessage(address, null, messageText, null, null);
     }
 
     public void generateOneTimePadButtonClick(View view) {
+    	// Create a new one-time pad for a given conversation
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    builder.setTitle("Generate new local pad of the entered size?");
+	    
 		// Set up the input
 		final EditText numberInput = new EditText(this);
 		numberInput.setInputType(InputType.TYPE_CLASS_NUMBER);
 		builder.setView(numberInput);
+		
 		// Set up the buttons
 		builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() { 
 		    @Override
@@ -300,12 +310,15 @@ public class Hub extends Activity {
     }
     
     public void setLocalNumber() {
+    	// Store the local number for the host user's phone
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    builder.setTitle("Set Local Number");
+	    
 		// Set up the input
 		final EditText numberInput = new EditText(this);
 		numberInput.setInputType(InputType.TYPE_CLASS_NUMBER);
 		builder.setView(numberInput);
+		
 		// Set up the buttons
 		builder.setPositiveButton("Set", new DialogInterface.OnClickListener() { 
 		    @Override
@@ -329,6 +342,7 @@ public class Hub extends Activity {
     \********/
 	
     public void shareOneTimePadButtonClick(View view) {
+    	// Save a one-time pad to SD
 		SharedPreferences prefs = this.getApplicationContext().getSharedPreferences("localPhoneNumber", Context.MODE_PRIVATE);
 		String localNumber = prefs.getString("localNumber", null);
 		
@@ -340,6 +354,7 @@ public class Hub extends Activity {
     }  
 
     public void loadOneTimePadButtonClick(View view) {
+    	// Load a one-time pad from SD
 		SharedPreferences prefs = this.getApplicationContext().getSharedPreferences("localPhoneNumber", Context.MODE_PRIVATE);
 		String localNumber = prefs.getString("localNumber", null);
 		

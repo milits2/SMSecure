@@ -19,10 +19,12 @@ public class Contacts {
 	}
 	
 	String[] getNumbersArray() {
+		// Converts the list of numbers into an array for display/storage
 		return numbers.toArray(new String[numbers.size()]);
 	}
 	
 	boolean addNumber(String number) {
+		// Add a number to the contacts list
 		if(number.length() != 10) return false;
 		
 		if(numbers.contains(number)) {
@@ -42,11 +44,13 @@ public class Contacts {
 	}
 	
 	void removeNumber(String number) {
+		// Remove a number from the contacts list
 		numbers.remove(number);
 		saveContacts();
 	}
 	
-	void saveContacts() { 
+	void saveContacts() {
+		// Store the contacts list in sharedpreferences.
 		String[] lNumbers = getNumbersArray();
 		
 		SharedPreferences prefs = context.getSharedPreferences("contactsBook", Context.MODE_PRIVATE);
@@ -68,6 +72,7 @@ public class Contacts {
 	}
 	
 	void loadContacts() {
+		// Load the contacts list from sharedpreferences.
 		SharedPreferences prefs = context.getSharedPreferences("contactsBook", Context.MODE_PRIVATE);
 		int size = prefs.getInt("contactsListSize", 0);
 		

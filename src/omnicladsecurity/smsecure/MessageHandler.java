@@ -32,18 +32,15 @@ public class MessageHandler {
 	}
 	
 	public void setLocalPad(OneTimePad pad) {
+		// Store the local pad in internal memory
 		localPad = pad;
 		if(localPad != null) {
 			storePadByName(localPad, "local");
 		}
 	}
 	
-	public void setContactPad() {
-		storeContactPad();
-	}
-	
-	
-	public void storeContactPad() {
+	public void shareLocalPad() {
+		// Save the local pad onto external memory for contact
 		SharedPreferences prefs = context.getSharedPreferences("localPhoneNumber", Context.MODE_PRIVATE);
 		String localNumber = prefs.getString("localNumber", null);
 		
@@ -66,7 +63,7 @@ public class MessageHandler {
 
             // Tell the media scanner about the new file so that it is
             // immediately available to the user.
-            //Not sure if use of context is correct here
+            // Not sure if use of context is correct here
             MediaScannerConnection.scanFile(context,
                     new String[] { file.toString() }, null,
                     new MediaScannerConnection.OnScanCompletedListener() {
@@ -83,17 +80,16 @@ public class MessageHandler {
         }
 	}
 	
-	public void loadContactPad(){
+	public void loadContactPad() {
+		// Load the contact's pad from external memory
 		SharedPreferences prefs = context.getSharedPreferences("localPhoneNumber", Context.MODE_PRIVATE);
 		String localNumber = prefs.getString("localNumber", null);
 		
 		File path = Environment.getExternalStorageDirectory();
-	    //File path = new File("/storage/sdcard1");
 	    File file = new File(path, contactNumber + "-" + localNumber + ".txt");
 	    
 		if(!file.exists()) {
-			// TODO make this not silently fail
-	    	
+			// TODO make this not silently fail	    	
 		}
 	    
 	    String padContents = "";
@@ -112,17 +108,14 @@ public class MessageHandler {
 			Log.w("ExternalStorage", "Error reading from " + contactNumber + "-" + localNumber, e);
 		}
 
-		boolean deleted = file.delete();
-		if(!deleted)
-		{
-			
-		}
+		file.delete();
 		
 		contactPad = new OneTimePad(padContents, 0);
 		storePadByName(contactPad, "contact");
 	}
 	
 	public void storePadByName(OneTimePad pad, String name) {
+		// Store a pad in internal memory
 		String routeName = context.getFilesDir() + "/" + contactNumber;
 		File path = new File(routeName);
 		path.mkdir();
@@ -155,6 +148,7 @@ public class MessageHandler {
 	}
 	
 	public OneTimePad loadPadByName(String name) {
+		// Load a pad from internal memory
 		String routeName = context.getFilesDir() + "/" + contactNumber;
 		String fileName = name + "Pad.dat";
 		File padFile = new File(routeName, fileName);
@@ -186,6 +180,7 @@ public class MessageHandler {
 	}
 	
 	public boolean canSendMessage(String message) {
+		// Verify that the pad is sufficient to send a message
 		if(localPad == null) return false;
 		return (localPad.offset + message.length()) < localPad.pad.length;
 	}
@@ -207,6 +202,7 @@ public class MessageHandler {
 	}
 	
 	public String decryptText(String message) {
+		// Unwrap and decrypt a received message
 		if(contactPad == null) {
 			return "[Get contact's pad] " + message;
 		}

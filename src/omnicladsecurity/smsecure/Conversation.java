@@ -12,8 +12,6 @@ import android.net.Uri;
 
 
 public class Conversation {
-	// The Conversation class contains the pertinent information for a conversation.
-	// They are loaded upon opening a conversation and populate themselves.
 	public MessageHandler handler;
 	public String contactNumber;
 	public Context context;
@@ -30,6 +28,7 @@ public class Conversation {
 	}
 	
 	public List<SMSMessage> loadTextMessages() {
+		// Load the text messages in from the phone for display.
     	Cursor cursor = context.getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
     	if(cursor.isAfterLast()) {
     		return new ArrayList<SMSMessage>();
@@ -69,14 +68,17 @@ public class Conversation {
 	}
 	
 	public String prepareTextMessage(String text) {
+		// Encrypt and wrap the text message for sending
 		return handler.encryptText(text);
 	}
 
-	public  void shareButtonClick() {
-		handler.setContactPad();
+	public void shareButtonClick() {
+		// Save the one-time pad onto external memory
+		handler.shareLocalPad();
 	}
 	
 	public void loadButtonClick(){
+		// Load the one-time pad from external memory
 		handler.loadContactPad();
 	}
 }

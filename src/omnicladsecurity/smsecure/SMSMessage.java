@@ -6,8 +6,5 @@ public class SMSMessage {
 	String message;
 	Date date;
 	
-	public SMSMessage()
-	{
-		
-	}
+	public SMSMessage() {}
 }
