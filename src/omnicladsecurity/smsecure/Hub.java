@@ -1,17 +1,16 @@
 package omnicladsecurity.smsecure;
 
-import java.io.File;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -29,6 +28,7 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class Hub extends Activity {	
@@ -336,10 +336,36 @@ public class Hub extends Activity {
 		builder.show();
 	}
 	
-	/********\
-	|* SD card storage
-	|* TODO make it not use a dummy pad
-	\********/
+	
+
+
+	BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+	
+	public void shareOneTimePadBluetoothButtonClick(View view) {
+		checkStartBluetooth();
+	}
+	
+	public void receiveOneTimePadBluetoothButtonClick(View view) {
+		checkStartBluetooth();
+		
+		Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+		startActivity(discoverableIntent);
+	}
+	
+	public void checkStartBluetooth() {
+		
+		if (mBluetoothAdapter == null) {
+			Toast.makeText(this, "Device does not support Bluetooth" , Toast.LENGTH_LONG).show();
+		}
+		
+		//This has no error handling if user declines to turn on bluetooth
+		if(mBluetoothAdapter.isEnabled() == false) {
+			Intent enableBtIntent = new Intent (BluetoothAdapter.ACTION_REQUEST_ENABLE);
+			
+			startActivity(enableBtIntent );
+			Toast.makeText(this,  "Bluetooth start was requested.", Toast.LENGTH_LONG).show();
+		}
+	}
 	
 	public void shareOneTimePadButtonClick(View view) {
 		// Save a one-time pad to SD

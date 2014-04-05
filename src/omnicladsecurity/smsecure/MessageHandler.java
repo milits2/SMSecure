@@ -63,7 +63,6 @@ public class MessageHandler {
 			
 			// Tell the media scanner about the new file so that it is
 			// immediately available to the user.
-			// Not sure if use of context is correct here
 			MediaScannerConnection.scanFile(context,
 					new String[] { file.toString() }, null,
 					new MediaScannerConnection.OnScanCompletedListener() {
@@ -232,4 +231,7 @@ public class MessageHandler {
 		// If it doesn't have the prefix, skip the message.
 		return message;
 	}
+
+
+	
 }

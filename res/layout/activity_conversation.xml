@@ -43,6 +43,24 @@
             android:layout_weight="1"
             android:onClick="shareOneTimePadButtonClick"
             android:text="@string/shareOTP" />
+        
+        <Button
+            android:id="@+id/shareOneTimePadBluetooth"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="shareOneTimePadBluetoothButtonClick"
+            android:text="@string/sendBT" />
+                
+        <Button
+            android:id="@+id/receiveOneTimePadBluetooth"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="receiveOneTimePadBluetoothButtonClick"
+            android:text="@string/receiveBT" />
 
         <Button
             android:id="@+id/loadOneTimePad"

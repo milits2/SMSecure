@@ -17,6 +17,8 @@
 	<string name="readSMS">Read SMS</string>
 	<string name="generateOTP">Gen</string>
 	<string name="shareOTP">Share</string>
+	<string name="sendBT">ShareBT</string>
+	<string name="receiveBT">ReceiveBT</string>
 	<string name="loadOTP">Load</string>
 	<string name="backToHub">Back</string>
 	<string name="send">Send</string>
