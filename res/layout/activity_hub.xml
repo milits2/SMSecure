@@ -25,13 +25,13 @@
             android:text="@string/addConversation" />
 
         <Button
-            android:id="@+id/setLocalNumber"
+            android:id="@+id/hubSettings"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:onClick="setLocalNumberButtonClick"
-            android:text="@string/setLocalNumber" />
+            android:onClick="hubSettingsButtonClick"
+            android:text="@string/settings" />
 
     </LinearLayout>
 

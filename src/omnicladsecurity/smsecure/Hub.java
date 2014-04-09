@@ -179,6 +179,36 @@ public class Hub extends Activity {
 		builder.show();
 	}
 	
+	public void hubSettingsButtonClick(View view) {
+		CharSequence options[] = new CharSequence[] {
+				"Set local number",
+				"Set external memory location",
+				"Set SMSecure password",
+				"Remove SMSecure password"
+				};
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Hub Settings");
+		builder.setItems(options, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch(which) {
+				case 0: // Set local number
+					setLocalNumber();
+					break;
+				case 1: // Set external memory location
+					setExternalMemoryLocation();
+					break;
+				case 2: // Set password
+					break;
+				case 3: // Remove password
+					break;
+				}
+			}
+		});
+		builder.show();
+	}
+	
 	public void setLocalNumberButtonClick(View view) {
 		setLocalNumber();
 	}
@@ -251,6 +281,50 @@ public class Hub extends Activity {
 		openHub();
 	}
 	
+	public void padManagerButtonClick(View view) {
+		CharSequence options[] = new CharSequence[] {
+				"Generate one-time pad",
+				"Share pad via SD card",
+				"Load pad via SD card",
+				"Share pad via Bluetooth",
+				"Load pad via Bluetooth"
+				};
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Pad Manager");
+		builder.setItems(options, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch(which) {
+				case 0: // Generate one-time pad
+					generateOneTimePad();
+					break;
+					
+				case 1: // Share pad via SD card
+					shareOneTimePad();
+					break;
+					
+				case 2: // Load pad via SD card
+					loadOneTimePad();
+					break;
+					
+				case 3: // Share pad via Bluetooth
+					checkStartBluetooth();
+					break;
+					
+				case 4: // Load pad via Bluetooth
+					checkStartBluetooth();
+					
+					Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+					startActivity(discoverableIntent);
+					
+					break;
+				}
+			}
+		});
+		builder.show();
+	}
+	
 	public void sendTextMessageButtonClick(View view) {
 		// UI handling for sending a text message to conversation partner
 		TextView text = (TextView)findViewById(R.id.messageText);
@@ -278,35 +352,6 @@ public class Hub extends Activity {
 		SmsManager smsManager = SmsManager.getDefault();
 		String messageText = activeConversation.prepareTextMessage(text);
 		smsManager.sendTextMessage(address, null, messageText, null, null);
-	}
-
-	public void generateOneTimePadButtonClick(View view) {
-		// Create a new one-time pad for a given conversation
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Generate new local pad of the entered size?");
-			
-		// Set up the input
-		final EditText numberInput = new EditText(this);
-		numberInput.setInputType(InputType.TYPE_CLASS_NUMBER);
-		builder.setView(numberInput);
-		
-		// Set up the buttons
-		builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() { 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				int inputNumber = Integer.parseInt(numberInput.getText().toString());
-				inputNumber = Math.min(8192, Math.max(1024, inputNumber));
-				
-				activeConversation.handler.setLocalPad(new OneTimePad(inputNumber));
-			}
-		});
-		builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.cancel();
-			}
-		});
-		builder.show();
 	}
 	
 	public void setLocalNumber() {
@@ -336,38 +381,78 @@ public class Hub extends Activity {
 		builder.show();
 	}
 	
-	
-
-
-	BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-	
-	public void shareOneTimePadBluetoothButtonClick(View view) {
-		checkStartBluetooth();
-	}
-	
-	public void receiveOneTimePadBluetoothButtonClick(View view) {
-		checkStartBluetooth();
+	public void setExternalMemoryLocation() {
+		// Store the local number for the host user's phone
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Set External Memory Location");
 		
-		Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-		startActivity(discoverableIntent);
+		// Set up the input
+		final EditText locationInput = new EditText(this);
+		locationInput.setInputType(InputType.TYPE_CLASS_TEXT);
+		builder.setView(locationInput);
+		
+		// Set up the buttons
+		builder.setPositiveButton("Set", new DialogInterface.OnClickListener() { 
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String inputLocation = locationInput.getText().toString();
+				
+				SharedPreferences prefs = getApplicationContext().getSharedPreferences("externalMemoryLocation", Context.MODE_PRIVATE);
+				SharedPreferences.Editor writer = prefs.edit();
+				writer.putString("externalLocation", inputLocation);
+				writer.commit();
+			}
+		});
+		builder.show();
 	}
+	
+	public void generateOneTimePad() {
+		// Create a new one-time pad for a given conversation
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Generate new local pad of the entered size?");
+			
+		// Set up the input
+		final EditText numberInput = new EditText(this);
+		numberInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+		builder.setView(numberInput);
+		
+		// Set up the buttons
+		builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() { 
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				int inputNumber = Integer.parseInt(numberInput.getText().toString());
+				inputNumber = Math.min(8192, Math.max(1024, inputNumber));
+				
+				activeConversation.handler.setLocalPad(new OneTimePad(inputNumber));
+			}
+		});
+		builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.cancel();
+			}
+		});
+		builder.show();
+	}
+	
+	BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 	
 	public void checkStartBluetooth() {
 		
-		if (mBluetoothAdapter == null) {
+		if(mBluetoothAdapter == null) {
 			Toast.makeText(this, "Device does not support Bluetooth" , Toast.LENGTH_LONG).show();
 		}
 		
-		//This has no error handling if user declines to turn on bluetooth
+		// This has no error handling if user declines to turn on Bluetooth
 		if(mBluetoothAdapter.isEnabled() == false) {
 			Intent enableBtIntent = new Intent (BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			
-			startActivity(enableBtIntent );
-			Toast.makeText(this,  "Bluetooth start was requested.", Toast.LENGTH_LONG).show();
+			startActivity(enableBtIntent);
+			Toast.makeText(this, "Bluetooth start was requested.", Toast.LENGTH_LONG).show();
 		}
 	}
 	
-	public void shareOneTimePadButtonClick(View view) {
+	public void shareOneTimePad() {
 		// Save a one-time pad to SD
 		SharedPreferences prefs = this.getApplicationContext().getSharedPreferences("localPhoneNumber", Context.MODE_PRIVATE);
 		String localNumber = prefs.getString("localNumber", null);
@@ -377,9 +462,9 @@ public class Hub extends Activity {
 		}
 		
 		activeConversation.shareButtonClick();
-	}  
-
-	public void loadOneTimePadButtonClick(View view) {
+	}
+	
+	public void loadOneTimePad() {
 		// Load a one-time pad from SD
 		SharedPreferences prefs = this.getApplicationContext().getSharedPreferences("localPhoneNumber", Context.MODE_PRIVATE);
 		String localNumber = prefs.getString("localNumber", null);
@@ -389,6 +474,5 @@ public class Hub extends Activity {
 		}
 		
 		activeConversation.loadButtonClick();
-	}  
-	
+	}
 }

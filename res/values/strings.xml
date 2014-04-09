@@ -6,6 +6,7 @@
 	
 	<string name="addConversation">+Convo</string>
 	<string name="setLocalNumber">Set Local #</string>
+	<string name="settings">Settings</string>
 	
 	<string name="generatePad">Generate Pad</string>
 	<string name="encryptText">Encrypt</string>
@@ -15,6 +16,7 @@
 	<string name="hub">Hub</string>
 	
 	<string name="readSMS">Read SMS</string>
+	<string name="padManager">Pad Manager</string>
 	<string name="generateOTP">Gen</string>
 	<string name="shareOTP">Share</string>
 	<string name="sendBT">ShareBT</string>

@@ -27,49 +27,13 @@
             android:text="@string/backToHub" />
 
         <Button
-            android:id="@+id/generateOneTimePad"
+            android:id="@+id/padManager"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="generateOneTimePadButtonClick"
-            android:text="@string/generateOTP" />
-
-        <Button
-            android:id="@+id/shareOneTimePad"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="shareOneTimePadButtonClick"
-            android:text="@string/shareOTP" />
-        
-        <Button
-            android:id="@+id/shareOneTimePadBluetooth"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="shareOneTimePadBluetoothButtonClick"
-            android:text="@string/sendBT" />
-                
-        <Button
-            android:id="@+id/receiveOneTimePadBluetooth"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="receiveOneTimePadBluetoothButtonClick"
-            android:text="@string/receiveBT" />
-
-        <Button
-            android:id="@+id/loadOneTimePad"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="loadOneTimePadButtonClick"
-            android:text="@string/loadOTP" />
+            android:onClick="padManagerButtonClick"
+            android:text="@string/padManager" />
     </LinearLayout>
     
     <LinearLayout
