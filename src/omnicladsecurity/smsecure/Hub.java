@@ -209,10 +209,6 @@ public class Hub extends Activity {
 		builder.show();
 	}
 	
-	public void setLocalNumberButtonClick(View view) {
-		setLocalNumber();
-	}
-	
 	/********\
 	|* Conversation management
 	\********/

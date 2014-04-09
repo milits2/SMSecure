@@ -33,6 +33,15 @@
             android:onClick="hubSettingsButtonClick"
             android:text="@string/settings" />
 
+        <Button
+            android:id="@+id/appTutorial"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onClick="appTutorialButtonClick"
+            android:text="@string/questionMark" />
+
     </LinearLayout>
 
     <ScrollView
