@@ -209,6 +209,10 @@ public class Hub extends Activity {
 		builder.show();
 	}
 	
+	public void appTutorialButtonClick(View view) {
+		
+	}
+	
 	/********\
 	|* Conversation management
 	\********/

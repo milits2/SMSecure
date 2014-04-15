@@ -40,7 +40,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:onClick="appTutorialButtonClick"
-            android:text="@string/questionMark" />
+            android:text="@string/help" />
 
     </LinearLayout>
 
