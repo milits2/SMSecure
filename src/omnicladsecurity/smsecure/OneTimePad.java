@@ -1,6 +1,6 @@
 package omnicladsecurity.smsecure;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class OneTimePad {
 	public char[] pad;
@@ -8,9 +8,10 @@ public class OneTimePad {
 	
 	public OneTimePad(int padLength) {
 		this.pad = new char[padLength];
-		Random pGen = new Random();		
+		
+		SecureRandom secGen = new SecureRandom();
 		for(int i = 0; i < padLength; ++i) {
-			this.pad[i] = (char)pGen.nextInt(Character.MAX_VALUE);
+			this.pad[i] = (char)secGen.nextInt(Character.MAX_VALUE);
 		}
 		
 		this.offset = 0;
