@@ -39,7 +39,7 @@ public class Guardian {
 		eraser.commit();
 	}
 	
-	private String hashText(String input) {
+	public String hashText(String input) {
 		MessageDigest md = null;
 		try {
 			md = MessageDigest.getInstance("SHA-1");
@@ -58,7 +58,7 @@ public class Guardian {
 		return hashed;
 	}
 	
-	private boolean verifyHash(String attempt, String hashed) {
+	public boolean verifyHash(String attempt, String hashed) {
 		String hashAttempt = hashText(attempt);
 		return hashAttempt.equals(hashed);
 	}
