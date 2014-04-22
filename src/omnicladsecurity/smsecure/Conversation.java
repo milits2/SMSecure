@@ -37,6 +37,7 @@ public class Conversation {
 		List<SMSMessage> messageList = new ArrayList<SMSMessage>();
 		
 		do {
+			// Loop over the messages, retaining any for the proper conversation
 			for(int idx = 0; idx < cursor.getColumnCount(); idx++) {
 				if (cursor.getColumnName(idx).equals("address") &&
 					cursor.getString(idx).equals(contactNumber)) {

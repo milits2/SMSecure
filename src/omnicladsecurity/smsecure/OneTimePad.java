@@ -9,6 +9,7 @@ public class OneTimePad {
 	public OneTimePad(int padLength) {
 		this.pad = new char[padLength];
 		
+		// SecureRandom uses an internal entropy source to seed
 		SecureRandom secGen = new SecureRandom();
 		for(int i = 0; i < padLength; ++i) {
 			this.pad[i] = (char)secGen.nextInt(Character.MAX_VALUE);

@@ -46,7 +46,6 @@ public class MessageHandler {
 		
 		//This only works if phone has internal storage and an SD card mounted
 		File path = Environment.getExternalStorageDirectory();
-		//File path = new File("/storage/sdcard1");
 		File file = new File(path, localNumber + "-" + contactNumber + ".txt");
 		
 		OneTimePad pad;
@@ -55,8 +54,7 @@ public class MessageHandler {
 		try {
 			path.mkdirs();
 			Toast.makeText(context, path.getPath() + " successsfully created", Toast.LENGTH_LONG).show();
-			
-			
+						
 			OutputStream os = new FileOutputStream(file);
 			os.write(new String(pad.pad).getBytes());
 			os.close();
