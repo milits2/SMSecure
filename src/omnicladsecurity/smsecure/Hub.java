@@ -31,6 +31,7 @@ import android.widget.TextView;
 public class Hub extends Activity {	
 	private Contacts contacts;
 	private Conversation activeConversation;
+	private Guardian guardian;
 	private Map<String, Integer> conversationMap;
 	
 	@Override
@@ -38,7 +39,14 @@ public class Hub extends Activity {
 		super.onCreate(savedInstanceState);
 				
 		contacts = new Contacts(this.getApplicationContext());
+		guardian = new Guardian(this.getApplicationContext());
 		openHub();
+	}
+	
+	@Override
+	protected void onResume() {
+	    super.onResume();
+	    checkPassword();
 	}
 
 	@Override
@@ -60,6 +68,47 @@ public class Hub extends Activity {
 		loadMessagesNumbers();
 		
 		loadConversationLinks();
+	}
+	
+	public void checkPassword() {
+		// If no password exists, just let them in.
+		if(guardian.attemptPassword(null)) {
+			return;
+		}
+
+		TableLayout linkLayout = (TableLayout)findViewById(R.id.linkLayout);
+		linkLayout.setVisibility(View.INVISIBLE);
+		// If it exists, request it in a dialog.
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Enter Password");
+		builder.setCancelable(false);
+		
+		// Set up the input
+		final EditText passwordInput = new EditText(this);
+		passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+		builder.setView(passwordInput);
+		
+		// Set up the buttons
+		builder.setPositiveButton("Enter", new DialogInterface.OnClickListener() { 
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String password = passwordInput.getText().toString();
+				if(guardian.attemptPassword(password)) {
+					TableLayout linkLayout = (TableLayout)findViewById(R.id.linkLayout);
+					linkLayout.setVisibility(View.VISIBLE);
+					return;
+				}
+				else finish();
+			}
+		});
+		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				finish();
+				dialog.cancel();
+			}
+		});
+		builder.show();
 	}
 	
 	public void loadMessagesNumbers()
@@ -197,10 +246,38 @@ public class Hub extends Activity {
 					setExternalMemoryLocation();
 					break;
 				case 2: // Set password
+					setPassword();
 					break;
 				case 3: // Remove password
+					guardian.removePassword();
 					break;
 				}
+			}
+		});
+		builder.show();
+	}
+	
+	public void setPassword() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Set Password");
+		
+		// Set up the input
+		final EditText passwordInput = new EditText(this);
+		passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+		builder.setView(passwordInput);
+		
+		// Set up the buttons
+		builder.setPositiveButton("Set", new DialogInterface.OnClickListener() { 
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String newPassword = passwordInput.getText().toString();
+				guardian.setPassword(newPassword);
+			}
+		});
+		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.cancel();
 			}
 		});
 		builder.show();

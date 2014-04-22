@@ -19,8 +19,9 @@ public class Guardian {
 		
 		// If there's no recorded password, just accept.
 		if(hashed == null) return true;
-		// Otherwise, check the hash.
-		return verifyHash(hashText(password), hashed);
+		// Otherwise, check the hash, if the password is real.
+		if(password == null || password.length() <= 0) return false;
+		return hashText(password).equals(hashed);
 	}
 	
 	public void setPassword(String password) {
@@ -56,10 +57,5 @@ public class Guardian {
 		}
 		
 		return hashed;
-	}
-	
-	public boolean verifyHash(String attempt, String hashed) {
-		String hashAttempt = hashText(attempt);
-		return hashAttempt.equals(hashed);
 	}
 }
