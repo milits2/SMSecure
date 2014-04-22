@@ -285,9 +285,7 @@ public class Hub extends Activity {
 		CharSequence options[] = new CharSequence[] {
 				"Generate one-time pad",
 				"Share pad via SD card",
-				"Load pad via SD card",
-				"Share pad via Bluetooth",
-				"Load pad via Bluetooth"
+				"Load pad via SD card"
 				};
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -306,19 +304,6 @@ public class Hub extends Activity {
 					
 				case 2: // Load pad via SD card
 					loadOneTimePad();
-					break;
-					
-				case 3: // Share pad via Bluetooth
-					checkStartBluetooth();
-					break;
-					
-				case 4: // Load pad via Bluetooth
-					checkStartBluetooth();
-					
-					Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-					startActivity(discoverableIntent);
-					
-					break;
 				}
 			}
 		});
@@ -433,23 +418,6 @@ public class Hub extends Activity {
 			}
 		});
 		builder.show();
-	}
-	
-	BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-	
-	public void checkStartBluetooth() {
-		
-		if(mBluetoothAdapter == null) {
-			Toast.makeText(this, "Device does not support Bluetooth" , Toast.LENGTH_LONG).show();
-		}
-		
-		// This has no error handling if user declines to turn on Bluetooth
-		if(mBluetoothAdapter.isEnabled() == false) {
-			Intent enableBtIntent = new Intent (BluetoothAdapter.ACTION_REQUEST_ENABLE);
-			
-			startActivity(enableBtIntent);
-			Toast.makeText(this, "Bluetooth start was requested.", Toast.LENGTH_LONG).show();
-		}
 	}
 	
 	public void shareOneTimePad() {
