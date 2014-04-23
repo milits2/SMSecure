@@ -44,8 +44,12 @@ public class MessageHandler {
 		SharedPreferences prefs = context.getSharedPreferences("localPhoneNumber", Context.MODE_PRIVATE);
 		String localNumber = prefs.getString("localNumber", null);
 		
+		SharedPreferences extMemPrefs = context.getSharedPreferences("externalMemoryLocation", Context.MODE_PRIVATE);	
+		String externalMem = extMemPrefs.getString("externalLocation", null);
 		//This only works if phone has internal storage and an SD card mounted
-		File path = Environment.getExternalStorageDirectory();
+		//File path = Environment.getExternalStorageDirectory();
+		
+		File path = new File("//storage//" + externalMem);
 		File file = new File(path, localNumber + "-" + contactNumber + ".txt");
 		
 		OneTimePad pad;
@@ -82,7 +86,10 @@ public class MessageHandler {
 		SharedPreferences prefs = context.getSharedPreferences("localPhoneNumber", Context.MODE_PRIVATE);
 		String localNumber = prefs.getString("localNumber", null);
 		
-		File path = Environment.getExternalStorageDirectory();
+		SharedPreferences extMemPrefs = context.getSharedPreferences("externalMemoryLocation", Context.MODE_PRIVATE);	
+		String externalMem = extMemPrefs.getString("externalLocation", null);
+		
+		File path = new File("//storage//" + externalMem);
 		File file = new File(path, contactNumber + "-" + localNumber + ".txt");
 		
 		if(!file.exists()) {
