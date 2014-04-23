@@ -143,25 +143,31 @@ public class Hub extends Activity {
 		linkLayout.removeAllViewsInLayout();
 		
 		// Load the list of conversations we have.
-		String[] numbers = contacts.getNumbersArray();		
-		for(String number: numbers) {
+		String[] numbers = contacts.getNumbersArray();
+		if(numbers.length > 0) {
+			for(String number: numbers) {
+				TableRow row = new TableRow(this);
+				row.setTag(number);
+				
+				Button conversationLink = new Button(this);
+				conversationLink.setTag(number);
+				conversationLink.setText("Text with " + number);
+				conversationLink.setOnClickListener(clickConversation);
+				row.addView(conversationLink);
+				
+				Button removeLink = new Button(this);
+				removeLink.setTag(number);
+				removeLink.setText("-");
+				removeLink.setOnClickListener(removeConversation);
+				row.addView(removeLink);
+				
+				linkLayout.setColumnStretchable(0, true);
+				
+				linkLayout.addView(row);
+			}
+		}
+		else {
 			TableRow row = new TableRow(this);
-			row.setTag(number);
-			
-			Button conversationLink = new Button(this);
-			conversationLink.setTag(number);
-			conversationLink.setText("Text with " + number);
-			conversationLink.setOnClickListener(clickConversation);
-			row.addView(conversationLink);
-			
-			Button removeLink = new Button(this);
-			removeLink.setTag(number);
-			removeLink.setText("-");
-			removeLink.setOnClickListener(removeConversation);
-			row.addView(removeLink);
-			
-			linkLayout.setColumnStretchable(0, true);
-			
 			linkLayout.addView(row);
 		}
 	}
