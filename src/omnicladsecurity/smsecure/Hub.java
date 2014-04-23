@@ -151,7 +151,11 @@ public class Hub extends Activity {
 				
 				Button conversationLink = new Button(this);
 				conversationLink.setTag(number);
-				conversationLink.setText("Text with " + number);
+				
+				String formattedNumber = "(" + number.substring(0, 3) + ")" +
+										 number.substring(3, 6) + "-" +
+										 number.substring(6, 10);
+				conversationLink.setText("Text " + formattedNumber);
 				conversationLink.setOnClickListener(clickConversation);
 				row.addView(conversationLink);
 				
@@ -195,7 +199,10 @@ public class Hub extends Activity {
 		activeConversation = new Conversation(this.getApplicationContext(), phoneNumber);
 		
 		TextView number = (TextView)findViewById(R.id.phoneNumber);
-		number.setText(phoneNumber);
+		String formattedNumber = "(" + phoneNumber.substring(0, 3) + ")" +
+								 phoneNumber.substring(3, 6) + "-" +
+								 phoneNumber.substring(6, 10);
+		number.setText("Conversation with " + formattedNumber);
 
 		loadMessageLog();
 	}

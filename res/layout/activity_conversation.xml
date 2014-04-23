@@ -43,14 +43,12 @@
         android:layout_height="wrap_content" 
         android:layout_below="@+id/conversationHeader">
 
-        <EditText
+        <TextView
             android:id="@+id/phoneNumber"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="phone" />
+            android:ems="10" />
 
     </LinearLayout>
 
