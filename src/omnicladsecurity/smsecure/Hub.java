@@ -297,7 +297,20 @@ public class Hub extends Activity {
 	}
 	
 	public void appTutorialButtonClick(View view) {
-		
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(
+					"Create a conversation with the +Convo button, then " +
+					"be sure to create a one-time pad and share it with your " +
+					"conversation partner via the options found in the pad manager. " +
+					"More specific instructions can be found in the external tutorial."
+				)
+		.setCancelable(false)
+		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				 dialog.cancel();
+			}
+		});
+		builder.show();
 	}
 	
 	/********\
