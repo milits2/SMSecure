@@ -207,7 +207,7 @@ public class Hub extends Activity {
 		
 		// Set up the input
 		final EditText numberInput = new EditText(this);
-		numberInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+		numberInput.setInputType(InputType.TYPE_CLASS_PHONE);
 		builder.setView(numberInput);
 		
 		// Set up the buttons
@@ -426,7 +426,7 @@ public class Hub extends Activity {
 		
 		// Set up the input
 		final EditText numberInput = new EditText(this);
-		numberInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+		numberInput.setInputType(InputType.TYPE_CLASS_PHONE);
 		builder.setView(numberInput);
 		
 		// Set up the buttons
