@@ -437,6 +437,7 @@ public class Hub extends Activity {
 		else if(message.length() > 0) {
 			sendTextMessage(message, activeConversation.getContactNumber());
 			text.setText("");
+			setConversationHeader();
 		}
 	}
 	
@@ -502,7 +503,7 @@ public class Hub extends Activity {
 	public void generateOneTimePad() {
 		// Create a new one-time pad for a given conversation
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Generate new local pad of the entered size?");
+		builder.setTitle("Choose pad size in bytes.");
 			
 		// Set up the input
 		final EditText numberInput = new EditText(this);
@@ -517,7 +518,7 @@ public class Hub extends Activity {
 				// Valid sizes: 1KB to 1MB
 				int sizeMin = 1024, sizeMax = 1024*1024;
 				
-				if (numberInput.getText().toString().length() <= 9 ){
+				if (numberInput.getText().toString().length() <= 9){
 					inputNumber = Integer.parseInt(numberInput.getText().toString());									
 				}
 				else {
