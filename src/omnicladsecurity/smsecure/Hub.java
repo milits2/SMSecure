@@ -505,9 +505,18 @@ public class Hub extends Activity {
 		builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() { 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				int inputNumber = Integer.parseInt(numberInput.getText().toString());
-				inputNumber = Math.min(8192, Math.max(1024, inputNumber));
+				int inputNumber;
+				// Valid sizes: 1KB to 1MB
+				int sizeMin = 1024, sizeMax = 1024*1024;
 				
+				if (numberInput.getText().toString().length() <= 9 ){
+					inputNumber = Integer.parseInt(numberInput.getText().toString());									
+				}
+				else {
+					inputNumber = sizeMax;	
+				}
+				
+				inputNumber = Math.min(sizeMax, Math.max(sizeMin, inputNumber));	
 				activeConversation.handler.setLocalPad(new OneTimePad(inputNumber));
 			}
 		});
