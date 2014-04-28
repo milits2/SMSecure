@@ -197,14 +197,22 @@ public class Hub extends Activity {
 		// Transition to the Conversation UI view
 		setContentView(R.layout.activity_conversation);
 		activeConversation = new Conversation(this.getApplicationContext(), phoneNumber);
-		
+		setConversationHeader();
+
+		loadMessageLog();
+	}
+	
+	public void setConversationHeader() {
 		TextView number = (TextView)findViewById(R.id.phoneNumber);
+		String phoneNumber = activeConversation.contactNumber;
 		String formattedNumber = "(" + phoneNumber.substring(0, 3) + ")" +
 								 phoneNumber.substring(3, 6) + "-" +
 								 phoneNumber.substring(6, 10);
-		number.setText("Conversation with " + formattedNumber);
-
-		loadMessageLog();
+		int padLeft = activeConversation.handler.padRemaining();
+		String padRemaining = padLeft >= 0 
+				? "[" + Integer.toString(padLeft) + "% of pad left]"
+				: "[No pad]";
+		number.setText("Texts with " + formattedNumber + " " + padRemaining);		
 	}
 	
 	public void addConversationButtonClick(View view) {
@@ -518,6 +526,7 @@ public class Hub extends Activity {
 				
 				inputNumber = Math.min(sizeMax, Math.max(sizeMin, inputNumber));	
 				activeConversation.handler.setLocalPad(new OneTimePad(inputNumber));
+				setConversationHeader();
 			}
 		});
 		builder.setNegativeButton("No", new DialogInterface.OnClickListener() {

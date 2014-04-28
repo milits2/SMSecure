@@ -13,7 +13,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 //import android.telephony.TelephonyManager;
@@ -237,6 +236,10 @@ public class MessageHandler {
 		return message;
 	}
 
-
-	
+	public int padRemaining() {
+		// Return the rounded portion of the pad remaining or -1 if nonexistent
+		if(localPad == null) return -1;
+		int padSize = localPad.pad.length;
+		return (100 * (padSize - localPad.offset)) / padSize;
+	}
 }
