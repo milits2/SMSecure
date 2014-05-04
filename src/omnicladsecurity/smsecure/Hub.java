@@ -40,7 +40,10 @@ public class Hub extends Activity {
 	public BroadcastReceiver intentReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if(activeConversation != null) loadMessageLog();
+			String senders = intent.getExtras().getString("senders");
+			if(activeConversation != null && activeConversation.contactNumber.equals(senders)) {
+				loadMessageLog();
+			}
 		}
 	};
 	
