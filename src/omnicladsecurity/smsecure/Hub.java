@@ -398,11 +398,15 @@ public class Hub extends Activity {
 			messageLayout.addView(temp);
 			messageLayout.addView(messageTimeView);			 
 		}
+		ScrollView messagePane = (ScrollView)findViewById(R.id.messagePane);
+		messagePane.setVisibility(View.INVISIBLE);
 		
 		findViewById(R.id.messagePane).post(new Runnable() {			
 			@Override
 			public void run() {
-				((ScrollView) findViewById(R.id.messagePane)).fullScroll(View.FOCUS_DOWN);			  
+				ScrollView messagePane = (ScrollView)findViewById(R.id.messagePane);
+				messagePane.setScrollY(messagePane.getChildAt(0).getHeight());
+				messagePane.setVisibility(View.VISIBLE);
 			}
 		});
 	}
