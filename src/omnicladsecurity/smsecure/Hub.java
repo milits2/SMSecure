@@ -3,6 +3,7 @@ package omnicladsecurity.smsecure;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import android.app.Activity;
@@ -353,13 +354,12 @@ public class Hub extends Activity {
 		List<SMSMessage> messages = activeConversation.loadTextMessages();
 		LinearLayout messageLayout = (LinearLayout)findViewById(R.id.messageLayout);
 
-		boolean colorOn = true;;
-		
-		String previousDate = "spaceholdertext";
+		boolean colorOn = true;		
+		String previousDate = "placeholder";
 		
 		for(SMSMessage message: messages) {		
-			String messageDate = new SimpleDateFormat("MM/dd/yyyy").format(message.date);
-			String messageTime = new SimpleDateFormat("hh:mm:ss.SSS").format(message.date);
+			String messageDate = new SimpleDateFormat("MM/dd/yyyy", Locale.US).format(message.date);
+			String messageTime = new SimpleDateFormat("hh:mm:ss.SSS", Locale.US).format(message.date);
 			
 			if (!previousDate.equals(messageDate)) {
 				previousDate = messageDate;
@@ -387,8 +387,7 @@ public class Hub extends Activity {
 
 			if(colorOn) {
 				temp.setBackgroundColor(Color.parseColor("#EFEFFF"));
-				messageTimeView.setBackgroundColor(Color.parseColor("#EFEFFF"));
-				
+				messageTimeView.setBackgroundColor(Color.parseColor("#EFEFFF"));				
 			}
 			else {
 				temp.setBackgroundColor(Color.parseColor("#DFDFFF"));

@@ -9,7 +9,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
-
 public class Conversation {
 	public MessageHandler handler;
 	public String contactNumber;
