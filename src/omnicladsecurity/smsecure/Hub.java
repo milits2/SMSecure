@@ -7,8 +7,11 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -33,11 +36,20 @@ public class Hub extends Activity {
 	private Conversation activeConversation;
 	private Guardian guardian;
 	private Map<String, Integer> conversationMap;
+	private IntentFilter intentFilter;
+	public BroadcastReceiver intentReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if(activeConversation != null) loadMessageLog();
+		}
+	};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-				
+		
+		intentFilter = new IntentFilter();
+		intentFilter.addAction("SMS_RECEIVED_ACTION");
 		contacts = new Contacts(this.getApplicationContext());
 		guardian = new Guardian(this.getApplicationContext());
 		openHub();
@@ -45,8 +57,15 @@ public class Hub extends Activity {
 	
 	@Override
 	protected void onResume() {
+		registerReceiver(intentReceiver, intentFilter);
 	    super.onResume();
 	    checkPassword();
+	}
+	
+	@Override
+	protected void onPause() {
+		unregisterReceiver(intentReceiver);
+		super.onPause();
 	}
 
 	@Override
@@ -68,6 +87,7 @@ public class Hub extends Activity {
 		loadMessagesNumbers();
 		
 		loadConversationLinks();
+		activeConversation = null;
 	}
 	
 	public void checkPassword() {
