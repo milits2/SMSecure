@@ -356,6 +356,8 @@ public class Hub extends Activity {
 		// Load the text message history for display.
 		List<SMSMessage> messages = activeConversation.loadTextMessages();
 		LinearLayout messageLayout = (LinearLayout)findViewById(R.id.messageLayout);
+		// Clear the old message layouts
+		messageLayout.removeAllViewsInLayout();
 
 		boolean colorOn = true;		
 		String previousDate = "placeholder";
