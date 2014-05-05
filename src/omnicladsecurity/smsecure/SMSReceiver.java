@@ -9,6 +9,12 @@ import android.telephony.SmsMessage;
 public class SMSReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		try {
+			Thread.sleep(250);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 		Bundle bundle = intent.getExtras();
 		if(bundle != null) {
 			Object[] pdus = (Object[])bundle.get("pdus");

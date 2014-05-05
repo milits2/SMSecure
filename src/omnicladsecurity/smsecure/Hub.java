@@ -32,7 +32,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 
-public class Hub extends Activity {	
+public class Hub extends Activity {
+	// Design pattern: Singleton
 	private Contacts contacts;
 	private Conversation activeConversation;
 	private Guardian guardian;
@@ -42,6 +43,7 @@ public class Hub extends Activity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String senders = intent.getExtras().getString("senders");
+			// Design pattern: Null object
 			if(activeConversation != null && activeConversation.contactNumber.equals(senders)) {
 				loadMessageLog();
 			}
@@ -91,6 +93,7 @@ public class Hub extends Activity {
 		loadMessagesNumbers();
 		
 		loadConversationLinks();
+		// Design pattern: Null object
 		activeConversation = null;
 	}
 	

@@ -210,7 +210,7 @@ public class MessageHandler {
 			return "[Get contact's pad] " + message;
 		}
 		
-		// Encrypted messages will be of the form |~|offset|message
+		// Design pattern: Command
 		if(message.startsWith("|~|")) {
 			// Find the offset/verify that it's properly formed.
 			int offset;
